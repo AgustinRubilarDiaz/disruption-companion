@@ -24,6 +24,13 @@ Como <pasajero | agente de operación>, quiero <capacidad>, para <beneficio>.
 | Paso | determinístico / AI-assisted / agentic / human | Control / fallback |
 |---|---|---|
 
+## Validación
+- `.feature`: `features/<archivo>` — escenarios
+- Tests: `<archivos>`
+
+| AC | Evidencia |
+|---|---|
+
 ## Dependencias y riesgos
 -
 

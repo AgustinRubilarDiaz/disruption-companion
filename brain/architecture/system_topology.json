@@ -16,17 +16,17 @@
       "path": "engine/",
       "role": "vertical-slice",
       "status": "implemented",
-      "stack": "TypeScript + Node (ADR-002) — versiones a fijar en engine/package.json",
+      "stack": "Node >=24 + TypeScript 5.9.3, node:http, vitest 4.0.8 (ADR-002)",
       "responsibility": "Combinar reserva, eventos y políticas para determinar qué corresponde al pasajero; orquestar tools de escritura con control",
-      "produces": ["brain/contracts/disruption-api.md"],
+      "produces": ["brain/contracts/disruption-assessment.md", "brain/contracts/disruption-api.md"],
       "dependsOn": ["get_trip_context", "get_operational_events", "get_eligible_options", "get_policy_rules", "create_rebooking_request", "create_human_case", "notify_passenger"]
     },
     {
-      "id": "passenger-experience",
+      "id": "passenger-web",
       "path": "web/",
       "role": "complementary-layer",
       "status": "implemented",
-      "stack": "React 19 + TypeScript + Vite 8 (paquete propio; lo sirve el motor desde web/dist)",
+      "stack": "React 19 + TypeScript + Vite 8 + Tailwind CSS 4; Playwright (Chrome) para e2e (paquete propio; lo sirve el motor desde web/dist) (ADR-010)",
       "spec": "brain/contracts/passenger-experience.md",
       "responsibility": "Pantalla del pasajero: alerta, impacto, siguiente paso y aceptar la opción. Sin lógica de negocio",
       "dependsOn": ["disruption-engine"]

@@ -27,6 +27,7 @@ const acceptButton = () => screen.queryByRole('button', { name: 'Aceptar este ca
 afterEach(() => {
   cleanup();
   vi.useRealTimers();
+  window.history.replaceState(null, '', '/');
 });
 
 describe('Característica: Pantalla del pasajero (HU-010)', () => {

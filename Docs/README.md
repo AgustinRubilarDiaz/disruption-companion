@@ -6,6 +6,8 @@ de uso de IA.
 
 | # | Documento | Responde a |
 |---|---|---|
+| 0 | [00-proceso-documentacion.md](00-proceso-documentacion.md) | ¿Cómo se generaron los documentos 01 a 14? Incluye el análisis previo en NotebookLM |
+| 0 | [00-prompts-documentos-entrada.md](00-prompts-documentos-entrada.md) | Los prompts reales usados para esos documentos |
 | 1 | [01-definicion-negocio.md](01-definicion-negocio.md) | ¿Qué problema de negocio hay, para quién y con qué restricciones? |
 | 2 | [02-objetivo-principal.md](02-objetivo-principal.md) | ¿Cuál es el objetivo que guía las decisiones? |
 | 3 | [03-descripcion-producto.md](03-descripcion-producto.md) | ¿Qué es el producto, qué hace la V1 y qué no hace? |
@@ -24,14 +26,18 @@ de uso de IA.
 | 16 | [16-contrato-disruption-assessment.md](16-contrato-disruption-assessment.md) | Contrato de salida del backend v1.0, con el JSON del caso `ABC123` |
 | 17 | [17-plan-implementacion.md](17-plan-implementacion.md) | Plan del vertical slice: modelo de datos, algoritmos, API, pruebas, entregables y envío |
 | 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| — | [epica/EP-01-asistencia-ante-modificacion-de-vuelo.md](epica/EP-01-asistencia-ante-modificacion-de-vuelo.md) | Épica y mapa de ruta: HU, criterios de aceptación y ADR a crear |
+| 19 | [19-producto-poc-a-propuesta.md](19-producto-poc-a-propuesta.md) | El producto de la POC a la propuesta: reglas de evolución, ramas, catálogo UX/PL y plan de UX-01 |
+| 20 | [20-consulta-compleja.md](20-consulta-compleja.md) | La consulta ambigua o compleja (§5.2): descomposición, contexto, clasificación y dónde se detiene |
+| — | [epica/EP-01-asistencia-ante-modificacion-de-vuelo.md](epica/EP-01-asistencia-ante-modificacion-de-vuelo.md) y `epica/HU-0XX-*.md` | Épica, mapa de ruta y una historia de usuario por archivo, con criterios de aceptación y validación |
+
+## De dónde sale cada documento
+Los documentos 1 a 8, 10 a 14, 16 y la carpeta `epica/` son una **copia generada** desde `../brain/`
+(`brain/operations/sync-docs.sh`): se corrigen allá y se regeneran, no se editan acá. El documento 9
+resume `../HALLAZGOS.md`. Los documentos 00, 15, 17, 18, 19 y 20 sólo existen acá.
 
 ## Convención
 - Lo que está explícito en el enunciado se presenta como hecho.
-- Lo que es una propuesta de diseño se marca **Supuesto** y referencia su pregunta abierta (`P-XX`)
+- Lo que es una propuesta de diseño se marca **Supuesto** y referencia su pregunta abierta (`H-XX`)
   en el documento 9.
 
 ## Principio de diseño

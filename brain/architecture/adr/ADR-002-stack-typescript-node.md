@@ -10,6 +10,12 @@ ADR-001 fija el track Backend. Hace falta un stack que permita, dentro de 3 h: t
 contratos de las tools, mockearlas con los fixtures y ejecutar los `.feature` como tests.
 
 ## Opciones consideradas
+> **Enmienda 2026-10-29** (decisión 5 de `Docs/17` §1, aprobada con el recorte por tiempo): los
+> `.feature` se escriben en Gherkin y se ejecutan como **tests de vitest con el mismo nombre de
+> escenario** (`engine/test/scenarios/`). cucumber-js queda como mejora: su configuración con
+> TypeScript consumía tiempo que no había. Versiones verificadas en `engine/package.json`:
+> Node ≥ 24, TypeScript 5.9.3, vitest 4.0.8.
+
 ### A. TypeScript + Node (vitest + cucumber-js)
 - A favor: tipos para los contratos de `tools-api.md`; arranque rápido; los `.feature` en español
   corren con cucumber-js; mismo lenguaje que un frontend futuro.

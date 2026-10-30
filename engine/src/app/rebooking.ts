@@ -9,9 +9,10 @@ export type RebookingOutcome =
   | { status: 410; body: { error: 'OPTION_EXPIRED' } }
   | { status: 422; body: { error: 'OPTION_NOT_RECOMMENDED' } };
 
-/** Determinística: la misma reserva, opción, versión de política y cantidad de pasajeros dan la misma clave. */
-export function idempotencyKey(bookingId: string, optionId: string, policyRef: string, passengerCount: number): string {
-  return createHash('sha256').update([bookingId, optionId, policyRef, passengerCount].join('|')).digest('hex');
+/** Determinística: la misma reserva, opción, versión de política y pasajeros (en cualquier orden) dan la misma clave. */
+export function idempotencyKey(bookingId: string, optionId: string, policyRef: string, passengerIds: string[]): string {
+  const passengers = [...passengerIds].sort().join(',');
+  return createHash('sha256').update([bookingId, optionId, policyRef, passengers].join('|')).digest('hex');
 }
 
 /**
@@ -34,7 +35,8 @@ export async function requestRebooking(
     return { status: 422, body: { error: 'OPTION_NOT_RECOMMENDED' } };
   }
 
-  const key = idempotencyKey(bookingId, optionId, ev.input.policy.version, ev.group.passenger_count);
+  const passengerIds = ev.input.trip.passengers.map((p) => p.passenger_id);
+  const key = idempotencyKey(bookingId, optionId, ev.input.policy.version, passengerIds);
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
       const r = await deps.tools.create_rebooking_request(bookingId, optionId, key);

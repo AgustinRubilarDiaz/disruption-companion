@@ -52,6 +52,38 @@ describe('toViewModel', () => {
     expect(toViewModel(a).reference).toBeUndefined();
   });
 
+  it('itinerario del caso base: tramos con horas, retraso, puerta y la conexión perdida tras S1', () => {
+    const { legs, missedAfter } = toViewModel(A).itinerary;
+    expect(legs.map((l) => l.flight)).toEqual(['LA500', 'LA2410']);
+    expect(legs[0]).toMatchObject({ status: 'DELAYED', scheduledDeparture: '14:30', newDeparture: '17:10', delayLabel: '+160 min', gate: '24' });
+    expect(legs[1]).toMatchObject({ status: 'SCHEDULED', scheduledDeparture: '19:05' });
+    expect(legs[1]!.newDeparture).toBeUndefined();
+    expect(missedAfter).toBe('S1');
+    expect(toViewModel(A).compare).toEqual({
+      before: { flight: 'LA2410', date: '2026-09-15', time: '19:05' },
+      after: { flight: 'LA2412', date: '2026-09-16', time: '08:15' },
+    });
+  });
+
+  it('un tramo sin confirmar no expone hora nueva, retraso ni puerta aunque vinieran en el contrato', () => {
+    const tampered: Assessment = {
+      ...(conf as Assessment),
+      segments: (conf as Assessment).segments.map((s) =>
+        s.segment_id === 'S1' ? { ...s, new_departure_local: '17:10', delay_minutes: 160, gate: '24' } : s,
+      ),
+    };
+    const s1 = toViewModel(tampered).itinerary.legs[0]!;
+    expect(s1).toMatchObject({ status: 'UNVERIFIED', statusLabel: 'Sin confirmar', scheduledDeparture: '14:30' });
+    expect(s1.newDeparture ?? s1.delayLabel ?? s1.gate).toBeUndefined();
+    expect(toViewModel(tampered).itinerary.missedAfter).toBeUndefined();
+  });
+
+  it('sin opción ofrecida no hay comparación; un estado de tramo desconocido se muestra como sin confirmar', () => {
+    expect(toViewModel(noev as Assessment).compare).toBeUndefined();
+    const odd: Assessment = { ...A, segments: A.segments.map((s) => ({ ...s, status: 'BOARDING_V2' })) };
+    expect(toViewModel(odd).itinerary.legs.every((l) => l.status === 'UNVERIFIED')).toBe(true);
+  });
+
   it('formatea la cuenta regresiva', () => {
     expect(formatCountdown(115)).toBe('01:55');
     expect(formatCountdown(0)).toBe('00:00');

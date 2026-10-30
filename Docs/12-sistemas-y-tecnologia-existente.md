@@ -108,9 +108,9 @@ Lo que la V1 necesita como mínimo, sea cual sea el stack:
 
 | Tema | Por qué importa | Pregunta |
 |---|---|---|
-| Errores de los sistemas de lectura | Sin ellos no se puede diseñar la degradación con precisión | P-11 |
-| Zona horaria de los horarios | Cálculo de la conexión perdida | P-07 |
-| Autenticación, latencia, límites de uso y SLA de cada sistema | Presupuesto de latencia y reintentos | P-24 |
-| Consultar el estado de una solicitud después de un 503 | Reconciliación sin depender de un reintento | P-12 |
-| Disparador de eventos para avisar en forma proactiva | La V1 sólo responde cuando el pasajero consulta | P-22 |
-| Política de reembolso `POL-REFUND-2026-01` | O3 la cita y no está disponible | P-23 |
+| Errores de los sistemas de lectura | Sin ellos no se puede diseñar la degradación con precisión | H-11 |
+| Zona horaria de los horarios | Cálculo de la conexión perdida | H-07 |
+| Autenticación, latencia, límites de uso y SLA de cada sistema | Presupuesto de latencia y reintentos | H-24 |
+| Consultar el estado de una solicitud después de un 503 | Reconciliación sin depender de un reintento | H-12 |
+| Disparador de eventos para avisar en forma proactiva | La V1 sólo responde cuando el pasajero consulta | H-22 |
+| Política de reembolso `POL-REFUND-2026-01` | O3 la cita y no está disponible | H-23 |

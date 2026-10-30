@@ -69,7 +69,7 @@ siguiente paso.
 8. `data_as_of` de un segmento es la hora del **evento más antiguo** usado para construir su estado: el
    dato vale lo que su parte menos fresca.
 9. Las horas con sufijo `_local` son hora local del aeropuerto, tal como las entregan los sistemas. La
-   zona horaria no está especificada (P-07). Los campos `_at` y `valid_until` están en UTC.
+   zona horaria no está especificada (H-07). Los campos `_at` y `valid_until` están en UTC.
 10. Si una derivación tiene `status = CREATION_FAILED`, el mensaje incluye un canal de contacto
     alternativo y nunca menciona un caso que no existe.
 
@@ -84,7 +84,7 @@ viajan para la trazabilidad y las métricas, pero **no se muestran como texto al
   confirmar el estado de tu viaje") y el siguiente paso de contacto. Nunca deduce nada por su cuenta.
 
 ## 16.5 Ejemplo: caso base `ABC123`
-Supone la regla por defecto RD-13: O1 se recomienda en automático y R5 se deriva en paralelo (P-17).
+Supone la regla por defecto RD-13: O1 se recomienda en automático y R5 se deriva en paralelo (H-17).
 
 ```json
 {
@@ -160,7 +160,7 @@ Supone la regla por defecto RD-13: O1 se recomienda en automático y R5 se deriv
 - El evento `ON_TIME` de `LEGACY_MIRROR` se ignora (`degraded_events_ignored: 1`) y resuelve el único
   conflicto (`conflicts_resolved: 1`).
 
-### Variante conservadora de P-17 (si se elige)
+### Variante conservadora de H-17 (si se elige)
 Si con un menor en el grupo todo el caso va a una persona, cambian sólo estos campos:
 `recommended_option: null`, `next_step: "WAIT_FOR_AGENT"` y
 `message.template_id: "DELAY_MISSED_CONNECTION_AGENT_V1"`. Ese mensaje informa el retraso, la conexión
@@ -213,7 +213,7 @@ Lo que no viaja al consumidor queda en el registro (HU-008):
 ```
 
 `booking_ref` es un seudónimo de `booking_id`. El registro no contiene datos personales, y el valor
-`international: true` de R2 depende de cómo se determine el carácter internacional (P-07).
+`international: true` de R2 depende de cómo se determine el carácter internacional (H-07).
 
 ## 16.7 Catálogo de motivos de descarte de opciones
 | Código | Cuándo |

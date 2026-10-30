@@ -20,6 +20,8 @@ En el gate: `⏸ [P2 · 7/7 · e2e-closure · razonamiento] — esperando aproba
 - [ ] Los escenarios del `.feature` aprobado pasan (comando y resultado)
 - [ ] Tests y linter del componente en verde
 - [ ] Las instrucciones para ejecutarlo funcionan desde cero
+- [ ] Si la HU toca la pantalla: `npm run test:e2e` en `web/` en verde **y las capturas de `Docs/img/`
+      revisadas una por una** (un test en verde no detecta un panel invisible ni un texto cortado — ENH-002)
 
 **Reglas de dominio**
 - [ ] Toda recomendación cita `policy_ref` + `rule_id` de la versión vigente (RN-01)
