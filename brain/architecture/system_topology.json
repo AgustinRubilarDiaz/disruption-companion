@@ -18,7 +18,7 @@
       "status": "implemented",
       "stack": "Node >=24 + TypeScript 5.9.3, node:http, vitest 4.0.8 (ADR-002)",
       "responsibility": "Combinar reserva, eventos y políticas para determinar qué corresponde al pasajero; orquestar tools de escritura con control",
-      "produces": ["brain/contracts/disruption-api.md"],
+      "produces": ["brain/contracts/disruption-assessment.md", "brain/contracts/disruption-api.md"],
       "dependsOn": ["get_trip_context", "get_operational_events", "get_eligible_options", "get_policy_rules", "create_rebooking_request", "create_human_case", "notify_passenger"]
     },
     {

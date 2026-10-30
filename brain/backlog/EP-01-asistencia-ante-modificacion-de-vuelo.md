@@ -8,7 +8,7 @@
   - **OV-1 · Contención (resultado):** tasa de contacto al call center dentro de las 24 h siguientes
     a la respuesta. Meta supuesta: −20 % frente a la línea base (H-16).
   - **OV-2 · Exactitud (límite):** tasa de recomendación incorrecta. Meta derivada del punto de
-    equilibrio entre ahorro por contacto y costo por error (`Docs/10` §10.5); el 1 % es un marcador.
+    equilibrio entre ahorro por contacto y costo por error (`../product/10-as-is-to-be-e-impacto.md` §10.5); el 1 % es un marcador.
     Además, **0 acciones de alto impacto sin control** (meta absoluta).
   - Ambas se calculan desde el registro de decisiones (HU-008).
 
@@ -58,7 +58,7 @@ a una persona o iniciar una acción controlada.
 ## Definiciones que usan las HU
 Viven en el Brain, no acá:
 - Estados del viaje (`trip_status`), siguiente paso (`next_step`) y motivos de derivación:
-  `../domain/ubiquitous-language.md` y `../contracts/disruption-api.md`.
+  `../domain/ubiquitous-language.md` y `../contracts/disruption-assessment.md`.
 - Supuestos con los que se escriben los criterios (relevancia, fuentes, conexión, filtro de
   opciones, idempotencia…): `../../HALLAZGOS.md` (H-01, H-05 a H-09, H-12, H-13, H-17).
   Si un supuesto cambia, se ajusta el parámetro y el criterio, no el diseño.
@@ -70,12 +70,14 @@ Viven en el Brain, no acá:
 | Sin IA en runtime (la épica original lo numeraba ADR-002) | ADR-009 | Aceptado |
 | Pantalla React en `web/` | ADR-010 | Aceptado |
 | Producto: de la POC a la propuesta | ADR-011 | Aceptado |
-| Consolidación de eventos (H-05, H-06, H-07) | ADR-003 | Reservado, sin escribir |
-| Evaluación de políticas con predicados por `rule_id` (H-13) | ADR-004 | Reservado, sin escribir |
-| Matriz automático / humano (H-03, H-04, H-08, H-17) | ADR-005 | Reservado, sin escribir |
-| Escrituras de alto impacto: idempotency key y 503 (H-10, H-12) | ADR-006 | Reservado, sin escribir |
-| Datos personales y trazabilidad (H-02) | ADR-007 | Reservado, sin escribir |
-| Contrato de salida `DisruptionAssessment` | ADR-008 | Reservado, sin escribir |
+| Consolidación de eventos (H-05, H-06, H-07) | ADR-003 | Propuesto |
+| Evaluación de políticas: intérprete acotado, no predicados por `rule_id` (H-13) | ADR-004 | Propuesto |
+| Matriz automático / humano (H-03, H-04, H-08, H-17) | ADR-005 | Propuesto |
+| Escrituras de alto impacto: idempotency key y 503 (H-10, H-12) | ADR-006 | Propuesto |
+| Datos personales y trazabilidad (H-02) | ADR-007 | Propuesto |
+| Contrato de salida `DisruptionAssessment` | ADR-008 | Propuesto |
+
+Los ADR-003 a ADR-008 registran lo que la POC ya implementó; pasan a Aceptado cuando el usuario los aprueba.
 
 ## Mapa de ruta
 ```mermaid
@@ -111,7 +113,7 @@ flowchart LR
     A8 --> H10
 ```
 
-**Corte contra el presupuesto.** El corte vigente y la priorización MVP / fase 2 están en `Docs/13`
+**Corte contra el presupuesto.** El corte vigente y la priorización MVP / fase 2 están en `../product/13-alcance-presupuesto-y-plazos.md`
 §13.1 y §13.3. Orden de recorte si falta tiempo: HU-009 → HU-007 → HU-006 → HU-010. El núcleo
 (HU-001 a HU-005 y HU-008) no se recorta. Desvío respecto del corte original: HU-007 y HU-010 se
 implementaron (estaban previstas como pseudocódigo y especificación).

@@ -25,11 +25,16 @@ de uso de IA.
 | 17 | [17-plan-implementacion.md](17-plan-implementacion.md) | Plan del vertical slice: modelo de datos, algoritmos, API, pruebas, entregables y envío |
 | 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
 | 19 | [19-producto-poc-a-propuesta.md](19-producto-poc-a-propuesta.md) | El producto de la POC a la propuesta: reglas de evolución, ramas, catálogo UX/PL y plan de UX-01 |
-| — | [epica/EP-01-asistencia-ante-modificacion-de-vuelo.md](epica/EP-01-asistencia-ante-modificacion-de-vuelo.md) | Épica y mapa de ruta: HU, criterios de aceptación y ADR a crear |
+| — | [epica/EP-01-asistencia-ante-modificacion-de-vuelo.md](epica/EP-01-asistencia-ante-modificacion-de-vuelo.md) y `epica/HU-0XX-*.md` | Épica, mapa de ruta y una historia de usuario por archivo, con criterios de aceptación y validación |
+
+## De dónde sale cada documento
+Los documentos 1 a 8, 10 a 14, 16 y la carpeta `epica/` son una **copia generada** desde `../brain/`
+(`brain/operations/sync-docs.sh`): se corrigen allá y se regeneran, no se editan acá. El documento 9
+resume `../HALLAZGOS.md`. Los documentos 15, 17, 18 y 19 sólo existen acá.
 
 ## Convención
 - Lo que está explícito en el enunciado se presenta como hecho.
-- Lo que es una propuesta de diseño se marca **Supuesto** y referencia su pregunta abierta (`P-XX`)
+- Lo que es una propuesta de diseño se marca **Supuesto** y referencia su pregunta abierta (`H-XX`)
   en el documento 9.
 
 ## Principio de diseño

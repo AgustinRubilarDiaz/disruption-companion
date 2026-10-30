@@ -20,7 +20,7 @@ El problema **no es la falta de datos**, sino que **nadie los integra por el pas
 - Las opciones son candidatas, no decisiones.
 - La política tiene versiones.
 
-## 1.2 Por qué urge resolverlo ahora (Supuesto, P-18)
+## 1.2 Por qué urge resolverlo ahora (Supuesto, H-18)
 El enunciado no explica la urgencia. Estos son los argumentos que se pueden sostener con los datos y
 que habría que validar con el PM:
 
@@ -38,7 +38,7 @@ que habría que validar con el PM:
 Reducir la incertidumbre del pasajero y los contactos evitables al call center, **manteniendo
 exactitud, seguridad y trazabilidad**.
 
-## 1.4 Objetivos estratégicos que apoya (Supuesto, P-18 y P-19)
+## 1.4 Objetivos estratégicos que apoya (Supuesto, H-18 y H-19)
 
 | ID | Objetivo estratégico | Cómo lo apoya el producto | Tipo de impacto | Se mide con |
 |---|---|---|---|---|
@@ -76,6 +76,6 @@ El detalle y la clasificación están en el documento 11.
 - Escenarios sin política disponible: el enunciado sólo entrega la política de `DELAY`.
 
 ## 1.9 Ambigüedades que condicionan el negocio
-Qué es una modificación relevante (P-01), qué se muestra al pasajero (P-02), cuándo una
-recomendación es automática (P-03), cuándo interviene una persona (P-04) y qué hacer con fuentes
-contradictorias (P-05). Ver documento 9.
+Qué es una modificación relevante (H-01), qué se muestra al pasajero (H-02), cuándo una
+recomendación es automática (H-03), cuándo interviene una persona (H-04) y qué hacer con fuentes
+contradictorias (H-05). Ver documento 9.

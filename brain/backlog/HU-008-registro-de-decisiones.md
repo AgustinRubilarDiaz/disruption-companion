@@ -26,7 +26,7 @@ caso y medir OV-1 y OV-2.
 
 ## Componentes y contratos
 - Componentes: `engine/` (`app/orchestrator.ts`, `domain/assess.ts`)
-- Contratos: `Docs/16` §16.6 (registro de decisiones) · fixture `contracts/fixtures/decision_record_ABC123.json`
+- Contratos: `../contracts/disruption-assessment.md` §16.6 (registro de decisiones) · fixture `contracts/fixtures/decision_record_ABC123.json`
 
 ## Clasificación de pasos
 | Paso | Clasificación | Control / fallback |

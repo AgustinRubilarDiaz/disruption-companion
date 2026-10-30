@@ -91,7 +91,7 @@ get_eligible_options ───────────────────�
 
 1. **Consolidar** (`domain/consolidate.ts`): se descartan las fuentes degradadas y los eventos con más de 30 min. Por tipo gana el más reciente. Si un retraso y un `ON_TIME` sanos coexisten, el segmento queda `UNVERIFIED`. `data_as_of` es el evento usado más antiguo.
 2. **Impacto** (`impact.ts`): la llegada estimada (programada + retraso) se compara con la salida del siguiente segmento + MCT (configurable, 0 por defecto).
-3. **Política** (`policy.ts`): se evalúan las condiciones de `get_policy_rules` contra hechos calculados. **Cada entitlement respeta su propia bandera `requires_human_approval`** (decisión P-17). Una condición que el motor no entiende queda como regla no soportada y se deriva.
+3. **Política** (`policy.ts`): se evalúan las condiciones de `get_policy_rules` contra hechos calculados. **Cada entitlement respeta su propia bandera `requires_human_approval`** (decisión H-17). Una condición que el motor no entiende queda como regla no soportada y se deriva.
 4. **Opciones** (`options.ts`): descarte con motivo cerrado (asientos, diferencia de tarifa, tarifa no reembolsable, política no vigente, baja confianza, vencida). Se ofrece una sola, la de menor costo, la más temprana y de mayor confianza.
 5. **Control** (`control.ts`): un único `next_step` y las derivaciones (`APPROVAL_REQUIRED`, `SOURCE_CONFLICT`, `INCOMPLETE_DATA`, `NO_VIABLE_OPTION`, `UNSUPPORTED_RULE`, `READ_FAILURE`).
 6. **Mensaje** (`message.ts`): plantilla cerrada con `policy_ref` obligatorio. Los parámetros sólo salen de la evaluación.
@@ -136,7 +136,7 @@ la solicitud queda "pendiente de confirmación". Textos y reglas: [`brain/contra
 - No hay autenticación: el 404 por "reserva de otro titular" del contrato no se ejercita.
 - Si `get_policy_rules` falla, el servicio responde 500: sin política no se puede construir un mensaje validado. Es una pregunta abierta en `HALLAZGOS.md`.
 - Las escrituras (caso humano, notificación) se deduplican por `decision_id` en el mock, y en la demo el `decision_id` es fijo. En producción hay que definir quién deduplica (H-30, H-31).
-- Las horas `_local` se comparan sin zona horaria, tal como las entregan las tools (P-07).
+- Las horas `_local` se comparan sin zona horaria, tal como las entregan las tools (H-07).
 - La pantalla no tiene autenticación, está sólo en español, y el canal de contacto es genérico (H-32). Las pruebas con navegador real corren sólo en Chrome.
 - La vigencia de la opción corre desde que carga la pantalla porque el reloj de la demo es fijo (H-33).
 - El estado de las solicitudes de cambio vive en memoria: se pierde al reiniciar el servicio.

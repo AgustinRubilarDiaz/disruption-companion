@@ -46,7 +46,7 @@ acción de alto impacto (confirmación, una sola vez, nunca "confirmado").
 | `brain/architecture/system_topology.json` | `passenger-experience` pasa a `implemented` y su `path` a `web/` | — |
 
 **ADR:** ninguno nuevo. Se registra en ADR-001 que la capa complementaria se implementó. La clave de
-idempotencia de HU-007 queda como decisión de este plan (§5), porque ADR-006 sigue reservado.
+idempotencia de HU-007 queda como decisión de este plan (§5), formalizada después en ADR-006.
 
 **Fuera de alcance:** autenticación, internacionalización (sólo español), accesibilidad más allá de
 semántica HTML y contraste, pruebas con navegador real (Playwright), diseño responsive fino.
@@ -114,7 +114,7 @@ los parámetros salen sólo de `message.params`. Plantillas a cubrir:
   determinística: el mismo pedido da la misma clave, y los reintentos por 503 reutilizan la misma.
 - El botón sólo existe con `next_step = ACCEPT_OPTION` y pide confirmación antes de enviar.
 - El texto de éxito es "solicitado, pendiente de confirmación hasta las HH:MM". **Nunca "confirmado".**
-- Con P-17, R5 (atención prioritaria) no impide aceptar la opción: la cubre R3.
+- Con H-17, R5 (atención prioritaria) no impide aceptar la opción: la cubre R3.
 
 ## 6. Modelo de datos de la pantalla
 
