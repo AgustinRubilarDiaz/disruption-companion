@@ -18,7 +18,14 @@
 - La idempotency key es obligatoria y estable por intención (misma acción → misma key).
 - Ninguna escritura de alto impacto la decide un modelo sin control determinístico/humano.
 
+## 🟡 Decidido (H-12, `Docs/18` §5 y §11, 2026-10-29)
+- **Clave:** `sha256(booking_id | option_id | policy_ref | passenger_count)`. Es determinística: el
+  mismo pedido da la misma clave.
+- **Tras un 503:** hasta 2 reintentos con la misma clave. Si sigue indeterminado, la respuesta es
+  202 `CONFIRMING` y se abre un caso humano `REBOOKING_INDETERMINATE`. Nunca se reintenta con otra clave.
+- **Antes de escribir,** el backend vuelve a evaluar la reserva: la opción debe ser la recomendada
+  vigente y estar cubierta por un entitlement `GRANTED` (422 si no; 410 si venció).
+- Implementado en `engine/src/app/rebooking.ts`; contrato en `contracts/disruption-api.md`.
+
 ## Abierto
 - Quién confirma la solicitud `PENDING_CONFIRMATION` y cómo (H-10).
-- Estrategia de reconciliación tras un 503 (H-12).
-- Cómo se deriva la idempotency key (H-12).

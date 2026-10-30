@@ -32,6 +32,8 @@ ofrecerla. Detalle: `domain/rules/RN-02-opciones-candidatas.md`.
 incorrecta genera costo, reclamo o incumplimiento de política.
 **Cómo se aplica:** idempotency key obligatoria; 409 = ya existe; **503 = resultado indeterminado**
 (no reintentar a ciegas); reglas con `requires_human_approval: true` pasan por humano.
+🟡 Clave `sha256(booking|option|policy_ref|pax)`; tras un 503, 2 reintentos con la misma clave y
+luego `CONFIRMING` + caso humano (H-12, decidido 2026-10-29).
 Detalle: `domain/rules/RN-03-acciones-alto-impacto.md`.
 
 ### RN-04 · Nada no validado llega al pasajero ✅
@@ -50,6 +52,12 @@ Detalle: `domain/rules/RN-05-calidad-de-datos.md`.
 fuera de prompts a modelos y cada componente con acceso sólo a las tools que necesita.
 Detalle: `domain/rules/RN-06-datos-personales.md`.
 
+### RN-07 · Cada entitlement sigue su propia bandera de aprobación 🟡
+**Qué dice:** si aplican a la vez una regla sin aprobación y otra con `requires_human_approval: true`,
+cada una se trata por separado: la primera se otorga y su opción se ofrece; la segunda se deriva en paralelo.
+**Decisión:** P-17 / H-17, del usuario (2026-10-29). P-17b (lectura conservadora para el piloto) sigue abierta.
+Detalle: `domain/rules/RN-07-aprobacion-por-entitlement.md`.
+
 ---
 
 ## 2. Edge cases presentes en los datos del enunciado
@@ -60,13 +68,13 @@ Observados en `contracts/fixtures/`. El comportamiento esperado de los marcados 
 |---|---|---|---|
 | E1 | S1 con DELAY de 160 min (nueva salida 17:10 → llegada estimada 20:35) y S2 sale 19:05 | Conexión perdida probable → `POL-DELAY-2026-03/R3` aunque `R1` (≥180) no aplique | ❓ H-07 (cómo se determina `missed_connection`) |
 | E2 | `LEGACY_MIRROR` dice `ON_TIME` (09:30) y `OPS_CORE` dice DELAY (10:48); LEGACY_MIRROR está degradada | Fuentes contradictorias | ❓ H-05 |
-| E3 | Grupo con menor (P2, CHILD, 7 años) | `R5` → `PRIORITY_HANDLING` con `requires_human_approval: true` | ✅ dada; el *cómo* se escala ❓ H-04 |
+| E3 | Grupo con menor (P2, CHILD, 7 años) | `R5` → `PRIORITY_HANDLING` con `requires_human_approval: true` | ✅ dada; 🟡 se deriva en paralelo sin bloquear R3 (RN-07); el resto del *cómo* ❓ H-04 |
 | E4 | `O2` tiene 1 asiento y el booking 2 pasajeros | Opción no viable para el grupo completo | ❓ H-08 |
 | E5 | `O2` con `fare_difference` 180000 CLP pese a entitlement `REBOOK_NO_FEE` | Contradicción opción vs política | ❓ H-08 |
 | E6 | `O3` REFUND con tarifa `refundable: false` y `confidence: LOW` | Opción que contradice la tarifa | ❓ H-08 |
 | E7 | `trip_context` con `completeness: PARTIAL` (falta `change_penalty_amount`) | Decidir con datos incompletos | ❓ H-09 |
 | E8 | Opciones con `ttl_seconds: 120`; rebooking con `expires_at` | Ofrecer opciones vencidas | ✅ dada (hay TTL); manejo ❓ H-10 |
-| E9 | `create_rebooking_request` → 503 `UPSTREAM_TIMEOUT` | Resultado real indeterminado | ✅ RN-03 |
+| E9 | `create_rebooking_request` → 503 `UPSTREAM_TIMEOUT` | Resultado real indeterminado | ✅ RN-03; 🟡 reconciliación decidida (H-12) |
 
 ---
 
@@ -79,3 +87,4 @@ Observados en `contracts/fixtures/`. El comportamiento esperado de los marcados 
 **Q: ¿Qué es una "modificación relevante"?** — Abierta (H-01). No asumir.
 **Q: ¿Cuándo puede ir una recomendación automática?** — Abierta (H-03). Mientras tanto, el diseño
 por defecto es conservador: lo que requiere aprobación humana según la política, va a humano.
+Lo que sí está decidido: una regla que requiere aprobación no bloquea a otra que no la requiere (RN-07).

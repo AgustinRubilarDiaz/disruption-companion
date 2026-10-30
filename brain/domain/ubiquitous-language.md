@@ -33,5 +33,13 @@
 | **Caso humano** | Escalamiento a operación (`case_id`, `queue`, `sla_minutes`) | `create_human_case` |
 | **Evidencia** | Datos que acompañan un caso humano o justifican una recomendación | Sin PII innecesaria (RN-06) |
 | **Notificación** | Mensaje al pasajero vía `notify_passenger` (canal visto: `PUSH`) | Sólo contenido validado |
+| **DisruptionAssessment** | Respuesta única y validada del motor: estado del viaje, entitlements, opción recomendada, siguiente paso, derivaciones y mensaje | Contrato v1.0, `contracts/disruption-api.md` |
+| **decision_id** | Identificador de una evaluación. Deduplica las escrituras (caso humano, notificación) y lo envía la pantalla al aceptar | No se muestra al pasajero; H-31 |
+| **Derivación** | Motivo por el que el caso pasa a una persona (`escalations[]`): `APPROVAL_REQUIRED`, `SOURCE_CONFLICT`, `INCOMPLETE_DATA`, `NO_VIABLE_OPTION`, `UNSUPPORTED_RULE`, `READ_FAILURE`, `REBOOKING_INDETERMINATE` | Cada una abre un caso humano |
+| **Estado del viaje** | `trip_status` de la evaluación: `NO_CHANGE` (eventos verificados de fuentes sanas, ninguno modifica el viaje) · `INFORMATIVE_CHANGE` (sólo cambios que no afectan el itinerario, ej. `GATE_CHANGE`) · `RELEVANT_CHANGE` (activa una regla de política o hace perder una conexión; supuesto de H-01) · `UNVERIFIED` (sin eventos, todas las fuentes degradadas o falló una lectura) | `UNVERIFIED` existe para no afirmar "sin cambios" cuando no se sabe. `contracts/disruption-api.md` |
+| **Siguiente paso** | `next_step` único de la evaluación: `ACCEPT_OPTION` (hay una opción viable para aceptar) · `WAIT_FOR_AGENT` (se creó un caso humano; se informa el SLA) · `NO_ACTION_NEEDED` | Toda respuesta tiene exactamente uno |
+| **Reloj simulado** | Hora fija por escenario de demostración, declarada en `X-Simulated-Clock` | Con el reloj real, las opciones del enunciado estarían vencidas |
+| **Reserva de demostración** | Escenario mock: `ABC123` (caso base), `DEMOCONF` (conflicto), `DEMONOEV` (sin eventos) | `GET /v1/scenarios` |
+| **POC / Propuesta** | POC = cobertura total del desafío (`v0.1.0-poc`, `main`). Propuesta = evoluciones de producto (`UX-xx`, `PL-xx`) | ADR-011, `Docs/19` |
 | **Domain Specialist (DS)** | En este proyecto: el usuario, apoyado en el enunciado | |
 | **Comité** | Los dos evaluadores de la defensa | |

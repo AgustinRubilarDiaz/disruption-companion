@@ -12,16 +12,17 @@
       "id": "disruption-engine",
       "path": "engine/",
       "archetype": "servicio",
-      "stack": "TypeScript + Node (ADR-002)",
-      "claudeMd": "engine/CLAUDE.md (pendiente: init-component al crear el componente)",
+      "stack": "Node >=24 + TypeScript 5.9.3, node:http sin framework, vitest 4.0.8 (ADR-002)",
+      "claudeMd": "engine/CLAUDE.md (pendiente: init-component)",
       "owner": "usuario"
     },
     {
-      "id": "passenger-experience",
-      "path": "brain/contracts/passenger-experience.md",
-      "archetype": "diseño",
-      "stack": "markdown",
-      "claudeMd": null,
+      "id": "passenger-web",
+      "path": "web/",
+      "archetype": "frontend",
+      "stack": "React 19.3.1 + Vite 8.3.5 + Tailwind CSS 4.3.3, vitest 5.0.5 + jsdom, Playwright 1.64.1 (Chrome) (ADR-010)",
+      "spec": "brain/contracts/passenger-experience.md",
+      "claudeMd": "web/CLAUDE.md (pendiente: init-component)",
       "owner": "usuario"
     }
   ]

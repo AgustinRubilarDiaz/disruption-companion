@@ -19,24 +19,24 @@
 
 | ID | Pregunta | Propuestas a discutir | Estado |
 |---|---|---|---|
-| H-01 | ¿Qué es una **modificación relevante**? | (a) todo evento que active una regla de política; (b) + umbral de minutos; (c) GATE_CHANGE informativo, no "relevante" | Abierta |
+| H-01 | ¿Qué es una **modificación relevante**? | (a) todo evento que active una regla de política; (b) + umbral de minutos; (c) GATE_CHANGE informativo, no "relevante" | Abierta. **Supuesto de la POC:** relevante = activa una regla de la política o hace perder una conexión; `GATE_CHANGE` es informativo (EP-01, `trip_status`) |
 | H-02 | ¿Qué información puede **mostrarse al pasajero** y cuál no? | Mostrar: estado, horarios, entitlement, opciones. No: fuentes internas, `confidence`, PII de otros pasajeros | Abierta |
 | H-03 | ¿Cuándo una recomendación puede ir **automática**? | Sólo si: datos frescos y sin conflicto, regla sin `requires_human_approval`, opción viable para todo el grupo | Abierta |
 | H-04 | ¿Cuándo interviene **una persona** antes de actuar o comunicar? | R4/R5, conflicto de fuentes, 503 indeterminado, datos parciales críticos, ninguna opción viable | Abierta |
-| H-05 | ¿Qué hacer con **fuentes contradictorias**? ¿Umbral de frescura? | (a) prioridad por fuente; (b) más reciente gana; (c) excluir degradadas; (d) conflicto → humano | Abierta |
+| H-05 | ¿Qué hacer con **fuentes contradictorias**? ¿Umbral de frescura? | (a) prioridad por fuente; (b) más reciente gana; (c) excluir degradadas; (d) conflicto → humano | Abierta. **Supuesto de la POC:** se excluyen las degradadas y los eventos de más de 30 min (`max_event_age_minutes`, configurable); por tipo gana el más reciente; un retraso y un `ON_TIME` sanos a la vez → `UNVERIFIED` + `SOURCE_CONFLICT` (`engine/src/domain/consolidate.ts`) |
 
 ## Detectados en los datos de ejemplo
 
 | ID | Hallazgo | Evidencia | Estado |
 |---|---|---|---|
-| H-06 | `delay_minutes` ¿se mide por segmento o a destino final? | S1 160 min; con O1 la llegada a MEX pasa al día siguiente | Abierta |
-| H-07 | ¿Cómo se determina `missed_connection` e `international`? Falta tiempo mínimo de conexión y **zona horaria** de los horarios | S1 nueva llegada ~20:35 vs S2 sale 19:05 | Abierta |
-| H-08 | Criterios para filtrar opciones candidatas | O2: 1 asiento para 2 pax y diferencia de 180000 CLP pese a `REBOOK_NO_FEE`; O3: refund con tarifa no reembolsable y `LOW` | Abierta |
-| H-09 | ¿Qué hacer con `completeness: PARTIAL`? | Falta `change_penalty_amount` | Abierta |
-| H-10 | Vigencia: opciones con TTL 120 s y rebooking con `expires_at`. ¿Quién confirma `PENDING_CONFIRMATION`? | `_meta.ttl_seconds`, `expires_at` | Abierta |
+| H-06 | `delay_minutes` ¿se mide por segmento o a destino final? | S1 160 min; con O1 la llegada a MEX pasa al día siguiente | Abierta. **Supuesto de la POC:** por segmento (EP-01, HU-002) |
+| H-07 | ¿Cómo se determina `missed_connection` e `international`? Falta tiempo mínimo de conexión y **zona horaria** de los horarios | S1 nueva llegada ~20:35 vs S2 sale 19:05 | Abierta. **Supuesto de la POC:** MCT 0 min (`mct_minutes`, configurable); horas `_local` comparadas sin zona horaria; `international` por una tabla aeropuerto → país, y un aeropuerto desconocido deja R2 sin aplicar en automático (`impact.ts`, `policy.ts`) |
+| H-08 | Criterios para filtrar opciones candidatas | O2: 1 asiento para 2 pax y diferencia de 180000 CLP pese a `REBOOK_NO_FEE`; O3: refund con tarifa no reembolsable y `LOW` | Abierta. **Supuesto de la POC:** motivos cerrados `SEATS_INSUFFICIENT`, `FARE_DIFFERENCE_CONFLICTS_ENTITLEMENT`, `NON_REFUNDABLE_FARE`, `POLICY_NOT_AVAILABLE`, `LOW_CONFIDENCE`, `EXPIRED`; entre las viables se ofrece una sola: menor costo, más temprana, mayor confianza (`options.ts`) |
+| H-09 | ¿Qué hacer con `completeness: PARTIAL`? | Falta `change_penalty_amount` | Abierta. **Supuesto de la POC:** cada campo faltante se clasifica en crítico (deriva con `INCOMPLETE_DATA`) o no crítico; `change_penalty_amount` no es crítico si el entitlement es `REBOOK_NO_FEE` (EP-01, HU-001) |
+| H-10 | Vigencia: opciones con TTL 120 s y rebooking con `expires_at`. ¿Quién confirma `PENDING_CONFIRMATION`? | `_meta.ttl_seconds`, `expires_at` | Abierta (quién confirma). Ya fijado: la opción vencida se rechaza con 410 `OPTION_EXPIRED`, y la pantalla dice "pendiente de confirmación hasta HH:MM", nunca "confirmado" (`Docs/18` §5) |
 | H-11 | ¿Qué pasa si una tool de lectura falla o la política no está disponible? | Errores de lectura no especificados | Abierta |
-| H-12 | Derivación de la idempotency key y reconciliación tras 503 | `UPSTREAM_TIMEOUT` = indeterminado | Abierta |
-| H-13 | `condition` de la política es un string: ¿se interpreta o se mapea a código? | `"delay_minutes >= 240 AND international"` | Abierta |
+| H-12 | Derivación de la idempotency key y reconciliación tras 503 | `UPSTREAM_TIMEOUT` = indeterminado | **Resuelto → KNOWLEDGE_BASE RN-03** (decisión 5 de `Docs/18` §11, 2026-10-29) |
+| H-13 | `condition` de la política es un string: ¿se interpreta o se mapea a código? | `"delay_minutes >= 240 AND international"` | Abierta. **Supuesto de la POC:** un predicado en código por `rule_id`; una regla desconocida no se aplica y se deriva con `UNSUPPORTED_RULE` (`policy.ts`, HU-003; ADR-004 sin escribir) |
 | H-14 | ¿`compensation_requested` de dónde sale? ¿Lo pide el pasajero en la conversación? | `POL-DELAY-2026-03/R4` | Abierta |
 | H-15 | O1 implica pernocta en LIM (sale 16-09 08:15) y la política DELAY no tiene regla de hotel. ¿Se informa, se deriva o queda fuera de alcance? | `get_eligible_options` O1 vs `POL-DELAY-2026-03` | Abierta |
 | H-16 | No hay baseline de contactos al call center ni de reclamos: las metas de OV-1 (−20 %) y OV-2 (≤ 1 %) son hipótesis | `brain/product/05-objetivos-medibles.md` | Abierta |
@@ -57,6 +57,8 @@
 | H-31 | El mock deduplica por `decision_id`, pero en el escenario de demostración el `decision_id` es fijo. En producción cada evaluación tendría uno nuevo, y refrescar la pantalla crearía otro caso | `engine/src/adapters/mock/mockTools.ts` | Abierta (definir si `decision_id` es estable por reserva y estado de los datos) |
 | H-32 | La pantalla usa un canal de contacto genérico ("Contacta a un agente de LATAM"): el enunciado no define ninguno | `brain/contracts/passenger-experience.md` | Abierta (pregunta al Domain Specialist) |
 | H-33 | La vigencia de la opción corre en la pantalla desde que carga, porque el reloj de la demo es fijo. Con reloj real habría que medirla contra `valid_until` | `web/src/App.tsx` (`useCountdown`) | Abierta (cambia al conectar sistemas reales) |
+| H-34 | La imagen de Docker no se construyó: Docker no está instalado en la máquina de desarrollo. El `Dockerfile` está sin probar y la `api_url` depende de él (PL-01) | `Dockerfile` | Abierta (construir con Cloud Build o en una máquina con Docker antes del despliegue) |
+| H-35 | Las pruebas con navegador real corren sólo en Google Chrome (`channel: 'chrome'`): la descarga de los navegadores de Playwright falla detrás del proxy corporativo que intercepta TLS | `web/playwright.config.ts` | Abierta (Firefox y WebKit en CI, PL-02) |
 
 ## Harness / entorno
 
@@ -64,4 +66,4 @@
 |---|---|---|---|
 | H-90 | En `~/CLAUDE.md` y `~/.claude/skills/` hay un harness de **otro proyecto (MOT)** con skills del mismo nombre que se cargan en toda sesión | El router de la raíz lo declara no aplicable y los skills de acá se leen por ruta explícita. Si molesta, abrir el proyecto con esos skills deshabilitados | Mitigado |
 | H-91 | Los diagramas de `brain/architecture/diagrams.md` no se validaron con parser | Correr `npx -y @mermaid-js/mermaid-cli` cuando haya red | Abierta |
-| H-92 | El repo no tiene remote | Definir dónde se entrega (GitHub, zip) antes del primer push | Abierta |
+| H-92 | El repo no tiene remote | Definir dónde se entrega (GitHub, zip) antes del primer push | **Resuelto → `origin` = github.com/AgustinRubilarDiaz/disruption-companion** (ADR-011). Push pendiente, lo hace el usuario por HTTPS |
