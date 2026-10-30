@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "decision_id": "dec_01JB7Q3M8K2V",
+  "booking_id": "ABC123",
+  "evaluated_at": "2026-09-15T11:02:40Z",
+  "trip_status": "RELEVANT_CHANGE",
+  "group": { "passenger_count": 2, "includes_minor": true },
+  "segments": [
+    {
+      "segment_id": "S1",
+      "flight_number": "LA500",
+      "origin": "SCL",
+      "destination": "LIM",
+      "date": "2026-09-15",
+      "status": "DELAYED",
+      "scheduled_departure_local": "14:30",
+      "new_departure_local": "17:10",
+      "delay_minutes": 160,
+      "scheduled_arrival_local": "17:55",
+      "estimated_arrival_local": "20:35",
+      "gate": "24",
+      "data_as_of": "2026-09-15T10:48:00Z"
+    },
+    {
+      "segment_id": "S2",
+      "flight_number": "LA2410",
+      "origin": "LIM",
+      "destination": "MEX",
+      "date": "2026-09-15",
+      "status": "SCHEDULED",
+      "scheduled_departure_local": "19:05",
+      "scheduled_arrival_local": "23:40",
+      "data_as_of": "2026-09-15T10:48:00Z"
+    }
+  ],
+  "impact": {
+    "missed_connection": true,
+    "connection": {
+      "from_segment_id": "S1",
+      "to_segment_id": "S2",
+      "estimated_arrival_local": "20:35",
+      "next_departure_local": "19:05",
+      "mct_minutes": 0
+    },
+    "delay_basis": "PER_SEGMENT"
+  },
+  "entitlements": [
+    {
+      "entitlement": "REBOOK_NO_FEE",
+      "policy_ref": "POL-DELAY-2026-03",
+      "rule_id": "R3",
+      "requires_human_approval": false,
+      "status": "GRANTED"
+    },
+    {
+      "entitlement": "PRIORITY_HANDLING",
+      "policy_ref": "POL-DELAY-2026-03",
+      "rule_id": "R5",
+      "requires_human_approval": true,
+      "status": "PENDING_APPROVAL"
+    }
+  ],
+  "recommended_option": {
+    "option_id": "O1",
+    "type": "REBOOK",
+    "flight_number": "LA2412",
+    "origin": "LIM",
+    "destination": "MEX",
+    "date": "2026-09-16",
+    "departure_local": "08:15",
+    "fare_difference": 0,
+    "covers_passengers": 2,
+    "policy_ref": "POL-DELAY-2026-03",
+    "valid_until": "2026-09-15T11:04:35Z"
+  },
+  "next_step": "ACCEPT_OPTION",
+  "escalations": [
+    {
+      "reason": "APPROVAL_REQUIRED",
+      "policy_ref": "POL-DELAY-2026-03",
+      "rule_id": "R5",
+      "status": "CREATED",
+      "case_id": "HC-4471",
+      "sla_minutes": 45
+    }
+  ],
+  "message": {
+    "template_id": "DELAY_MISSED_CONNECTION_REBOOK_V1",
+    "policy_ref": "POL-DELAY-2026-03",
+    "params": {
+      "delayed_flight": "LA500",
+      "new_departure_local": "17:10",
+      "missed_flight": "LA2410",
+      "option_flight": "LA2412",
+      "option_date": "2026-09-16",
+      "option_departure_local": "08:15",
+      "passenger_count": 2,
+      "priority_handling_sla_minutes": 45
+    }
+  },
+  "data_quality": {
+    "completeness": "PARTIAL",
+    "missing_fields": ["fare_conditions.change_penalty_amount"],
+    "missing_fields_critical": false,
+    "degraded_events_ignored": 1,
+    "conflicts_resolved": 1
+  }
+}

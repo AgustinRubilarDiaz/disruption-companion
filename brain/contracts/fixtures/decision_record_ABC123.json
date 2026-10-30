@@ -1,0 +1,36 @@
+{
+  "decision_id": "dec_01JB7Q3M8K2V",
+  "booking_ref": "bk_9f2c41",
+  "evaluated_at": "2026-09-15T11:02:40Z",
+  "policy": { "policy_ref": "POL-DELAY-2026-03", "effective_from": "2026-03-01" },
+  "events_used": [
+    { "event_id": "E-1001", "segment_id": "S1", "type": "DELAY", "source": "OPS_CORE", "recorded_at": "2026-09-15T10:48:00Z" },
+    { "event_id": "E-1007", "segment_id": "S1", "type": "GATE_CHANGE", "source": "AIRPORT_FEED", "recorded_at": "2026-09-15T10:55:00Z" },
+    { "event_id": "E-2003", "segment_id": "S2", "type": "STATUS", "source": "OPS_CORE", "recorded_at": "2026-09-15T10:48:00Z" }
+  ],
+  "events_discarded": [
+    { "event_id": "E-1012", "segment_id": "S1", "source": "LEGACY_MIRROR", "reason": "SOURCE_DEGRADED" }
+  ],
+  "rule_evaluations": [
+    { "rule_id": "R1", "applies": false, "facts": { "delay_minutes": 160 } },
+    { "rule_id": "R2", "applies": false, "facts": { "delay_minutes": 160, "international": true } },
+    { "rule_id": "R3", "applies": true, "facts": { "missed_connection": true } },
+    { "rule_id": "R4", "applies": false, "facts": { "compensation_requested": false } },
+    { "rule_id": "R5", "applies": true, "facts": { "group_includes_minor": true } }
+  ],
+  "options_evaluated": [
+    { "option_id": "O1", "confidence": "HIGH", "result": "RECOMMENDED", "reasons": [] },
+    { "option_id": "O2", "confidence": "MEDIUM", "result": "DISCARDED", "reasons": ["SEATS_INSUFFICIENT", "FARE_DIFFERENCE_CONFLICTS_ENTITLEMENT"] },
+    { "option_id": "O3", "confidence": "LOW", "result": "DISCARDED", "reasons": ["NON_REFUNDABLE_FARE", "POLICY_NOT_AVAILABLE", "LOW_CONFIDENCE"] }
+  ],
+  "outcome": "RECOMMEND",
+  "next_step": "ACCEPT_OPTION",
+  "human_case": { "reason": "APPROVAL_REQUIRED", "case_id": "HC-4471" },
+  "request_id": null,
+  "notification_id": "NT-9912",
+  "data_quality": {
+    "completeness": "PARTIAL",
+    "missing_fields": ["fare_conditions.change_penalty_amount"],
+    "sources_degraded": ["LEGACY_MIRROR"]
+  }
+}

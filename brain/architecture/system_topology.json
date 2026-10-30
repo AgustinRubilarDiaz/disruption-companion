@@ -1,0 +1,44 @@
+{
+  "project": "disruption-companion",
+  "layout": "monorepo",
+  "track": "backend-integracion (ADR-001)",
+  "components": [
+    {
+      "id": "brain",
+      "path": "brain/",
+      "role": "harness",
+      "status": "active",
+      "responsibility": "Fuente de verdad: dominio, contratos, decisiones, backlog, skills",
+      "dependsOn": []
+    },
+    {
+      "id": "disruption-engine",
+      "path": "engine/",
+      "role": "vertical-slice",
+      "status": "implemented",
+      "stack": "TypeScript + Node (ADR-002) — versiones a fijar en engine/package.json",
+      "responsibility": "Combinar reserva, eventos y políticas para determinar qué corresponde al pasajero; orquestar tools de escritura con control",
+      "produces": ["brain/contracts/disruption-api.md"],
+      "dependsOn": ["get_trip_context", "get_operational_events", "get_eligible_options", "get_policy_rules", "create_rebooking_request", "create_human_case", "notify_passenger"]
+    },
+    {
+      "id": "passenger-experience",
+      "path": "web/",
+      "role": "complementary-layer",
+      "status": "implemented",
+      "stack": "React 19 + TypeScript + Vite 8 (paquete propio; lo sirve el motor desde web/dist)",
+      "spec": "brain/contracts/passenger-experience.md",
+      "responsibility": "Pantalla del pasajero: alerta, impacto, siguiente paso y aceptar la opción. Sin lógica de negocio",
+      "dependsOn": ["disruption-engine"]
+    }
+  ],
+  "externalSystems": [
+    { "id": "get_trip_context", "kind": "read", "contract": "brain/contracts/tools-api.md" },
+    { "id": "get_operational_events", "kind": "read", "contract": "brain/contracts/tools-api.md" },
+    { "id": "get_eligible_options", "kind": "read", "contract": "brain/contracts/tools-api.md" },
+    { "id": "get_policy_rules", "kind": "read", "contract": "brain/contracts/tools-api.md" },
+    { "id": "create_rebooking_request", "kind": "write-high-impact", "contract": "brain/contracts/tools-api.md" },
+    { "id": "create_human_case", "kind": "write", "contract": "brain/contracts/tools-api.md" },
+    { "id": "notify_passenger", "kind": "write", "contract": "brain/contracts/tools-api.md" }
+  ]
+}

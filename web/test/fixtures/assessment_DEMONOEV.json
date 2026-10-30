@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "decision_id": "dec_01JB7Q3M8K3N",
+  "booking_id": "DEMONOEV",
+  "evaluated_at": "2026-09-15T11:02:40Z",
+  "trip_status": "UNVERIFIED",
+  "group": {
+    "passenger_count": 2,
+    "includes_minor": true
+  },
+  "segments": [
+    {
+      "segment_id": "S1",
+      "flight_number": "LA500",
+      "origin": "SCL",
+      "destination": "LIM",
+      "date": "2026-09-15",
+      "status": "UNVERIFIED",
+      "scheduled_departure_local": "14:30",
+      "scheduled_arrival_local": "17:55"
+    },
+    {
+      "segment_id": "S2",
+      "flight_number": "LA2410",
+      "origin": "LIM",
+      "destination": "MEX",
+      "date": "2026-09-15",
+      "status": "UNVERIFIED",
+      "scheduled_departure_local": "19:05",
+      "scheduled_arrival_local": "23:40"
+    }
+  ],
+  "entitlements": [],
+  "recommended_option": null,
+  "next_step": "WAIT_FOR_AGENT",
+  "escalations": [
+    {
+      "reason": "INCOMPLETE_DATA",
+      "status": "CREATED",
+      "case_id": "HC-4471",
+      "sla_minutes": 45
+    }
+  ],
+  "message": {
+    "template_id": "TRIP_UNVERIFIED_AGENT_V1",
+    "policy_ref": "POL-DELAY-2026-03",
+    "params": {
+      "passenger_count": 2,
+      "agent_sla_minutes": 45
+    }
+  },
+  "data_quality": {
+    "completeness": "PARTIAL",
+    "missing_fields": [
+      "fare_conditions.change_penalty_amount"
+    ],
+    "missing_fields_critical": false,
+    "degraded_events_ignored": 0,
+    "conflicts_resolved": 0
+  }
+}

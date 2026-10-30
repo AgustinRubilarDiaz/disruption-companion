@@ -1,0 +1,28 @@
+{
+  "components": [
+    {
+      "id": "brain",
+      "path": "brain/",
+      "archetype": "harness",
+      "stack": "markdown + json",
+      "claudeMd": "brain/CLAUDE.md",
+      "owner": "usuario"
+    },
+    {
+      "id": "disruption-engine",
+      "path": "engine/",
+      "archetype": "servicio",
+      "stack": "TypeScript + Node (ADR-002)",
+      "claudeMd": "engine/CLAUDE.md (pendiente: init-component al crear el componente)",
+      "owner": "usuario"
+    },
+    {
+      "id": "passenger-experience",
+      "path": "brain/contracts/passenger-experience.md",
+      "archetype": "diseño",
+      "stack": "markdown",
+      "claudeMd": null,
+      "owner": "usuario"
+    }
+  ]
+}
