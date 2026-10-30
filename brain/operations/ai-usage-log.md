@@ -13,9 +13,11 @@
 | 3 | 2026-10-29 | Reloj desde 22:45, efectivo _a confirmar_ | `Docs/18`, `.feature` de la pantalla, aceptar la opción (HU-007), `web/` en React | _a confirmar_ |
 | 4 | 2026-10-30 | Reloj ≈ 07:35–11:30, efectivo _a confirmar_ | Prueba local, visión de producto (`Docs/19`), POC congelada y ramas, UX-01 con Tailwind y Playwright | _a confirmar_ |
 
-> Decisión del usuario pendiente: ¿el bootstrap del harness cuenta dentro de las 3 h? (D-05).
-> Las sesiones 3 y 4 son evolución de producto posterior a la POC; conviene declarar en la entrega si
-> cuentan dentro de las 3 h.
+**Tiempo declarado en la entrega (decisión del usuario, 2026-10-30): 180 min efectivos** =
+análisis y documentación 75 · POC (motor, contrato, tests) 80 · pantalla y UX-01 25 (la evolución
+cuenta dentro del límite, acotada como algo menor). El bootstrap del harness (sesión 0) y el
+análisis previo en NotebookLM son **preparación del entorno de trabajo**: se declaran aparte y se
+mencionan en `AI_USAGE.md` (D-05 resuelto).
 
 ## Uso de IA
 

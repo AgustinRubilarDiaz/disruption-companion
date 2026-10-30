@@ -1,143 +1,79 @@
-# Disruption Companion — backend (Caso A, track Backend/Integración)
+# Disruption Companion — README de ingeniería
 
-Servicio que recibe una reserva con un vuelo modificado y devuelve **un solo resultado validado**:
-el estado real del viaje, lo que la política le otorga al pasajero, la única opción que se le ofrece
-y el siguiente paso. Ante datos en conflicto, incompletos o una aprobación pendiente, deriva a una persona.
+Caso A · track **Backend/Integración**. Ante un vuelo modificado, el servicio entrega **un solo
+resultado validado**: qué pasó, qué le corresponde al pasajero, una única opción y el siguiente paso.
+Si los datos se contradicen, faltan o hay una aprobación pendiente, deriva a una persona.
+Entregable 1 (cómo correrlo, alcance, tests, limitaciones): [`EVIDENCIA.md`](EVIDENCIA.md) ·
+Entregable 3: [`AI_USAGE.md`](AI_USAGE.md).
 
-- Contrato de salida: `DisruptionAssessment` v1.0 — [`Docs/16-contrato-disruption-assessment.md`](Docs/16-contrato-disruption-assessment.md)
-- Especificación de comportamiento: [`brain/features/EP-01_evaluacion-disrupcion.feature`](brain/features/EP-01_evaluacion-disrupcion.feature) y [`brain/features/EP-01_pantalla-pasajero.feature`](brain/features/EP-01_pantalla-pasajero.feature)
-- Documentación de negocio y producto: [`Docs/README.md`](Docs/README.md)
-- Uso de IA y decisiones: [`AI_USAGE.md`](AI_USAGE.md)
+## 1. Problema y outcome esperado
+El pasajero no sabe qué pasó ni qué hacer, y llama al call center. El riesgo opuesto es igual de
+caro: informar algo no verificado o ejecutar un cambio que la política no respalda. **Outcome:**
+menos contactos evitables (OV-1) con **0 acciones de alto impacto sin control** (OV-2). Las metas
+salen del punto de equilibrio del error ([`Docs/10`](Docs/10-as-is-to-be-e-impacto.md) §10.5) y,
+sin línea base, son hipótesis (H-16).
 
-## Correrlo en local
+## 2. Supuestos y alcance
+- **Alcance:** HU-001 a HU-008 y HU-010 implementadas; HU-009 (texto libre) en diseño. Sólo `DELAY`,
+  con mocks que respetan los contratos del enunciado.
+- **Supuestos** (configurables, abiertos en [`HALLAZGOS.md`](HALLAZGOS.md)): frescura de 30 min,
+  MCT de 0 min, fuentes degradadas descartadas, horas locales sin zona horaria y motivos de descarte cerrados.
+- **Ambigüedades del §4:** cómo se resolvió cada una, en [`Docs/09`](Docs/09-supuestos-y-preguntas-abiertas.md)
+  y en los ADR 003 a 007. Regla general: ante la duda no se afirma. Un dato en conflicto o ausente da
+  `UNVERIFIED` y una derivación, nunca "sin cambios".
 
-Requiere Node 24.
+## 3. Decisiones y alternativas descartadas
 
-```bash
-# 1. Pantalla (React): se compila a web/dist, que el motor sirve en "/"
-cd web && npm install && npm test && npm run build
-
-# 2. Motor
-cd ../engine && npm install && npm test && npm run build && npm start
-```
-
-Abrir **http://localhost:8080**: la pantalla del pasajero, con un selector de reserva.
-
-```bash
-curl -i localhost:8080/v1/bookings/ABC123/disruption-assessment
-curl localhost:8080/v1/scenarios
-curl -X POST localhost:8080/v1/bookings/ABC123/rebooking-requests \
-  -H 'content-type: application/json' -d '{"decision_id":"dec_01JB7Q3M8K2V","option_id":"O1"}'
-```
-
-Desarrollo de la pantalla con recarga en caliente: `npm start` en `engine/` y `npm run dev` en `web/`
-(Vite redirige `/v1` al 8080).
-
-Con Docker, un solo contenedor con la API y la pantalla (el contexto es la raíz del repositorio):
-`docker build -t disruption . && docker run -p 8080:8080 disruption`.
-
-### Pruebas
-| Paquete | Comando | Qué cubre |
+| Decisión | Descartada | Criterio |
 |---|---|---|
-| `engine/` | `npm test` (43) | Escenarios de los dos `.feature`, contrato, unitarios, aceptación de la opción, idempotencia, archivos estáticos |
-| `web/` | `npm test` (41) | View model, interacción de la pantalla con jsdom (confirmar, modal accesible, vigencia, enlace directo, errores), campos prohibidos |
-| `web/` | `npm run test:e2e` (3) | Navegador real (Playwright con el Google Chrome instalado): recorrido de `ABC123` en móvil hasta "pendiente de confirmación", capturas y movimiento reducido |
+| Track Backend ([ADR-001](brain/architecture/adr/ADR-001-track-backend-integracion.md)) | Frontend | "Qué corresponde" se demuestra con tests |
+| Sin IA en runtime ([ADR-009](brain/architecture/adr/ADR-009-sin-ia-en-runtime.md)) | LLM que interpreta y redacta | Alucinar es el error a evitar; hay alternativa determinística |
+| Conflicto de fuentes → `UNVERIFIED` + persona ([ADR-003](brain/architecture/adr/ADR-003-consolidacion-de-eventos.md)) | Gana la más reciente | Afirmar un estado falso cuesta más que derivar |
+| Política con gramática acotada ([ADR-004](brain/architecture/adr/ADR-004-evaluacion-de-politicas.md)) | Evaluar `condition` libre | Una regla desconocida se deriva, no se adivina |
+| Aprobación por entitlement (RN-07) | Todo a una persona | Lectura literal; se endurece en la política sin tocar código |
+| 503 → misma clave, luego persona ([ADR-006](brain/architecture/adr/ADR-006-escrituras-de-alto-impacto.md)) | Reintentar con otra clave | El 503 es indeterminado: duplicaría el cambio |
+| Contrato único v1.0 ([ADR-008](brain/architecture/adr/ADR-008-contrato-de-salida.md)) | Exponer las tools | La pantalla no decide; 10 invariantes antes de responder |
 
-`test:e2e` compila la pantalla y el motor, y levanta un servidor propio en el puerto 8091. Necesita
-Google Chrome instalado: usa `channel: 'chrome'` en lugar de descargar Chromium.
+## 4. Clasificación de pasos
 
-Capturas del recorrido (generadas por `test:e2e`):
-
-| Caso base en móvil | Confirmación | Solicitud enviada | Sin confirmar | Modo oscuro |
+| Paso | Clasificación | Razón | Riesgo | Control / fallback |
 |---|---|---|---|---|
-| ![](Docs/img/ux01-mobile-abc123.png) | ![](Docs/img/ux01-mobile-confirm.png) | ![](Docs/img/ux01-mobile-requested.png) | ![](Docs/img/ux01-mobile-democonf.png) | ![](Docs/img/ux01-mobile-dark.png) |
+| Elegir la consulta | Determinístico | Opciones cerradas | No encuentra su caso | "Hablar con una persona" |
+| Consolidar eventos | Determinístico | Reglas de fuente y frescura | Dato viejo | Conflicto → `UNVERIFIED` + persona |
+| Impacto, política, opción | Determinístico | Política versionada | Regla mal mapeada | Tests; regla desconocida o sin opción → persona |
+| R4, R5, conflicto, 503 | **Human** | Lo exige la política o es incierto | Carga de L2 | Caso con evidencia sin datos personales |
+| Mensaje | Determinístico | Plantilla con hechos | Texto rígido | Sin `policy_ref` no se construye |
+| Aceptar la opción | Determinístico + pasajero | Alto impacto | Duplicar | Idempotencia y reevaluación |
+| Texto libre (HU-009) | AI-assisted (diseño) | Escribir con sus palabras | Mala lectura | Catálogo cerrado; duda → persona |
 
-Enlace directo a una reserva de demostración: `http://localhost:8080/?booking=DEMOCONF`.
+**Agentic: ninguno.** El orden de las tools es fijo; un agente sumaría no determinismo sin beneficio.
 
-## API
+## 5. Consulta ambigua o compleja (§5.2)
+*"¿Pierdo la conexión? Viajo con mi hijo y quiero que me compensen."* Se descompone en subtareas
+determinísticas: verificar el retraso pese a las fuentes contradictorias, calcular la conexión
+perdida, evaluar R3, R4 y R5, y elegir la opción. **Se detiene** en R4 (compensación) y R5 (menor): pasan a una persona en paralelo, sin bloquear el
+cambio de vuelo que R3 otorga. Diseño completo y dónde aportaría la IA: [`Docs/20`](Docs/20-consulta-compleja.md).
 
-| Método y ruta | Respuesta |
-|---|---|
-| `GET /` | La pantalla del pasajero (React). Sin `web/dist` compilado, lista las reservas en JSON |
-| `GET /health` | `{ "status": "ok" }` |
-| `POST /v1/bookings/{booking_id}/rebooking-requests` | Acepta la opción recomendada. 201 solicitud creada · 200 duplicado (mismo `request_id`) · 202 indeterminado · 400 · 404 · 410 `OPTION_EXPIRED` · 422 `OPTION_NOT_RECOMMENDED`. Detalle en [`Docs/18`](Docs/18-plan-frontend.md) §5 |
-| `GET /v1/scenarios` | Reservas de demostración y qué muestra cada una |
-| `GET /v1/bookings/{booking_id}/disruption-assessment` | 200 `DisruptionAssessment` · 400 `INVALID_BOOKING_ID` · 404 `BOOKING_NOT_FOUND` · 500 `INTERNAL_ERROR` |
+## 6. Riesgos y próximos pasos
+- **Datos reales distintos a los mocks:** las tools están detrás de un puerto. Siguiente paso:
+  adaptadores reales en modo sombra (PL-03).
+- **Política sin respuesta → 500 (H-29):** definir un mensaje genérico aprobado.
+- **Escrituras duplicadas entre evaluaciones (H-30, H-31):** definir quién deduplica en producción.
+- **Zona horaria y MCT (H-07):** tabla de aeropuertos.
+- **Sin autenticación:** enlace seguro desde el aviso (UX-05).
+- **Evolución de la POC a la propuesta:** [`Docs/15`](Docs/15-evolucion-y-recomendaciones.md) y
+  [`Docs/19`](Docs/19-producto-poc-a-propuesta.md).
 
-Una falla de un sistema de lectura no produce un 5xx: produce un 200 con `trip_status: UNVERIFIED`,
-`next_step: WAIT_FOR_AGENT` y una derivación `READ_FAILURE`.
+## 7. Cómo lo validé
+- **Antes de escribir código:** resolví el caso base a mano ([`Docs/08`](Docs/08-flujo.md)) y aprobé
+  el contrato y cada `.feature`.
+- **Tests, todos en verde:** 51 en el motor (uno por escenario; `ABC123` igual al fixture campo a
+  campo; invariantes y ausencia de datos personales en cada reserva), 41 de la pantalla con jsdom y
+  3 en un navegador real.
 
-### Reservas de demostración
-
-| Reserva | Qué muestra | Resultado |
-|---|---|---|
-| `ABC123` | Caso base del enunciado: retraso de 160 min, fuente degradada, conexión perdida, menor en el grupo | `RELEVANT_CHANGE`, O1 recomendada (R3), R5 derivada en paralelo (`APPROVAL_REQUIRED`, HC-4471) |
-| `DEMOCONF` | Dos fuentes sanas se contradicen sobre S1 | `UNVERIFIED`, `WAIT_FOR_AGENT`, `SOURCE_CONFLICT` |
-| `DEMONOEV` | No hay eventos operacionales | `UNVERIFIED` (nunca `NO_CHANGE`), `INCOMPLETE_DATA` |
-
-**Reloj simulado.** Los datos del enunciado son del 2026-09-15 y las opciones valen 120 s: con el reloj
-real estarían siempre vencidas. Cada escenario usa un reloj fijo y la respuesta lo declara en el
-encabezado `X-Simulated-Clock`.
-
-## Cómo decide
-
-```
-get_trip_context ─┐
-get_operational_events ─► consolidar ─► impacto ─► política ─► opciones ─► control ─► mensaje
-get_policy_rules ─┘                                                  ▲
-get_eligible_options ────────────────────────────────────────────────┘
-                                   └► create_human_case (por cada derivación) ─► notify_passenger
-```
-
-1. **Consolidar** (`domain/consolidate.ts`): se descartan las fuentes degradadas y los eventos con más de 30 min. Por tipo gana el más reciente. Si un retraso y un `ON_TIME` sanos coexisten, el segmento queda `UNVERIFIED`. `data_as_of` es el evento usado más antiguo.
-2. **Impacto** (`impact.ts`): la llegada estimada (programada + retraso) se compara con la salida del siguiente segmento + MCT (configurable, 0 por defecto).
-3. **Política** (`policy.ts`): se evalúan las condiciones de `get_policy_rules` contra hechos calculados. **Cada entitlement respeta su propia bandera `requires_human_approval`** (decisión H-17). Una condición que el motor no entiende queda como regla no soportada y se deriva.
-4. **Opciones** (`options.ts`): descarte con motivo cerrado (asientos, diferencia de tarifa, tarifa no reembolsable, política no vigente, baja confianza, vencida). Se ofrece una sola, la de menor costo, la más temprana y de mayor confianza.
-5. **Control** (`control.ts`): un único `next_step` y las derivaciones (`APPROVAL_REQUIRED`, `SOURCE_CONFLICT`, `INCOMPLETE_DATA`, `NO_VIABLE_OPTION`, `UNSUPPORTED_RULE`, `READ_FAILURE`).
-6. **Mensaje** (`message.ts`): plantilla cerrada con `policy_ref` obligatorio. Los parámetros sólo salen de la evaluación.
-7. **Invariantes** (`invariants.ts`): las 10 del contrato se verifican antes de responder.
-
-El dominio son funciones puras: no hacen I/O ni leen el reloj. Las 7 tools están detrás de un puerto
-(`ports/tools.ts`), y hoy el adaptador es un mock con los datos del enunciado. Para conectar los
-sistemas reales se cambia sólo el adaptador.
-
-## Estructura
-
-```
-engine/
-  src/domain/      reglas puras (un archivo por paso)
-  src/ports/       interfaz de las 7 tools y del reloj
-  src/adapters/    mocks con los fixtures del enunciado (escrituras idempotentes por decision_id)
-  src/app/         orquestador (lecturas → evaluación → escrituras) y rebooking (HU-007)
-  src/http/        servidor HTTP (node:http, sin framework): API y archivos de la pantalla
-  fixtures/        copia de brain/contracts/fixtures (un test verifica que sean idénticos)
-  test/            scenarios/ (.feature), contract/, unit/
-web/
-  src/viewModel.ts contrato → lo que se muestra (función pura, sin lógica de negocio)
-  src/copy.ts      textos por template_id
-  src/App.tsx      pantalla: alerta, itinerario, siguiente paso, comparación, confirmar, vigencia
-  src/components/  barra demo, tarjeta de estado, línea de tiempo, comparación, vigencia, modal, esqueleto
-  src/styles.css   Tailwind CSS 4 y tokens de diseño (@theme)
-  test/            viewModel, interacción (jsdom) y fixtures generados por el motor real
-  e2e/             Playwright: recorrido real y capturas (Docs/img/)
-Dockerfile         un contenedor con API y pantalla
-```
-
-La pantalla sólo lee `DisruptionAssessment` v1.0: no calcula entitlements, elegibilidad ni conexiones.
-No muestra `policy_ref`, `rule_id`, `decision_id` ni `data_quality`, y nunca escribe "confirmado":
-la solicitud queda "pendiente de confirmación". Textos y reglas: [`brain/contracts/passenger-experience.md`](brain/contracts/passenger-experience.md).
-
-## Seguridad y datos personales
-- La respuesta, el registro de decisiones y los logs no contienen nombres, correos, teléfonos, documentos ni nivel de fidelidad: el grupo se describe con cantidad y un indicador de menor. Un test lo verifica en cada reserva.
-- Los logs sólo llevan `decision_id`, un seudónimo de la reserva (`bk_…`), el estado y los motivos de derivación.
-
-## Limitaciones conocidas (recorte por tiempo)
-- Sólo 3 reservas de demostración. Opciones vencidas, política reemplazada, regla desconocida y sin opción viable están cubiertas por tests unitarios, pero no tienen reserva de demostración.
-- No hay autenticación: el 404 por "reserva de otro titular" del contrato no se ejercita.
-- Si `get_policy_rules` falla, el servicio responde 500: sin política no se puede construir un mensaje validado. Es una pregunta abierta en `HALLAZGOS.md`.
-- Las escrituras (caso humano, notificación) se deduplican por `decision_id` en el mock, y en la demo el `decision_id` es fijo. En producción hay que definir quién deduplica (H-30, H-31).
-- Las horas `_local` se comparan sin zona horaria, tal como las entregan las tools (H-07).
-- La pantalla no tiene autenticación, está sólo en español, y el canal de contacto es genérico (H-32). Las pruebas con navegador real corren sólo en Chrome.
-- La vigencia de la opción corre desde que carga la pantalla porque el reloj de la demo es fijo (H-33).
-- El estado de las solicitudes de cambio vive en memoria: se pierde al reiniciar el servicio.
-- La imagen de Docker no se construyó en esta máquina; el `Dockerfile` está sin probar.
+## 8. Cómo se construyó la documentación
+- **Proceso:** [`Docs/00-proceso-documentacion.md`](Docs/00-proceso-documentacion.md) explica los
+  pasos que generaron `Docs/01` a `Docs/14`. Antes, el PDF se cargó en un
+  [cuaderno de NotebookLM](https://notebooklm.google.com/notebook/7d959f64-6aa0-42ea-b2b7-e58594bd9195)
+  para un análisis limpio y cerrado, que dio los puntos de entrada del harness (`brain/`).
+- **Prompts usados:** [`Docs/00-prompts-documentos-entrada.md`](Docs/00-prompts-documentos-entrada.md).
