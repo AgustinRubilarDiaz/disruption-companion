@@ -13,7 +13,7 @@
 | D-02 | Stack del vertical slice | `init-component` y comandos de test | **Resuelto → ADR-002** (TypeScript + Node) |
 | D-04 | ¿Servicio HTTP o función invocable? | Forma de `contracts/disruption-api.md` | **Resuelto → servicio HTTP** (la entrega exige `api_url`; `Docs/17` decisión 2) |
 | D-03 | ¿IA en runtime? Si no, qué beneficio se esperaba y por qué no se justifica | Exigido por el enunciado §5 | **Resuelto → ADR-009** (sin IA en runtime) |
-| D-05 | ¿El bootstrap del harness cuenta dentro de las 3 h? | Cambia el tiempo disponible (`Docs/13` §13.3: ≈ 105 min si cuenta) | Abierta |
+| D-05 | ¿El bootstrap del harness cuenta dentro de las 3 h? | Cambia el tiempo disponible (`Docs/13` §13.3: ≈ 105 min si cuenta) | **Resuelto → no cuenta:** es preparación del entorno, se declara aparte en `AI_USAGE.md`; 180 min efectivos repartidos en análisis 75 · POC 80 · pantalla y UX-01 25 (2026-10-30) |
 
 ## Ambigüedades del enunciado (§4 — deben resolverse o documentarse)
 

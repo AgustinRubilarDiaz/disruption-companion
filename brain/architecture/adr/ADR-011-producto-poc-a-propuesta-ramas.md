@@ -30,6 +30,13 @@ sin romper lo que la entrega del desafío ya cubre.
 - Remote: `origin` = `github.com/AgustinRubilarDiaz/disruption-companion` (público). La identidad de
   git es local al repo; el push lo hace el usuario.
 
+## Enmienda 2026-10-30 — release antes del envío
+UX-01 cuenta dentro de las 3 h declaradas, como mejora menor, y los entregables corregidos
+(README, `EVIDENCIA.md`, `AI_USAGE.md`) tienen que estar en `main`. Por eso, **antes del envío** se
+libera `dev` → `main` como **`v0.2.0`**, y el envío (`github_url`, `api_url`) apunta a esa versión.
+`v0.1.0-poc` queda como referencia de la POC sin la mejora. Después del envío vuelve a regir la
+regla original: `main` no recibe evoluciones hasta una release aprobada.
+
 ## Consecuencias
 - Positivas: el comité ve una versión estable; las evoluciones (catálogo UX-01…05, PL-01…04 de
   `Docs/19`) tienen métrica y no se mezclan con la entrega.
