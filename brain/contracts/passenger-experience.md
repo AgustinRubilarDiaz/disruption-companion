@@ -54,7 +54,7 @@ El `case_id` sólo como "N.º de referencia". Un test lo verifica en las tres re
 Nunca se escribe "confirmado": la solicitud queda pendiente hasta que el sistema de reservas la confirme.
 
 ## Clave de idempotencia (decisión de Docs/18 §5)
-`sha256(booking_id | option_id | policy_ref | passenger_count)`, calculada por el backend. Los
+`sha256(booking_id | option_id | policy_ref | passenger_ids ordenados)`, calculada por el backend. Los
 reintentos por 503 reutilizan la misma clave. La formaliza ADR-006.
 
 ## Fuera de alcance

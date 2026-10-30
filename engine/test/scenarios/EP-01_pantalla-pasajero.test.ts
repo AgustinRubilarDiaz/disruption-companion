@@ -70,14 +70,15 @@ describe('Característica: Pantalla del pasajero ante una modificación de vuelo
   });
 
   it('Escenario: La clave de idempotencia es determinística', () => {
-    const k = idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-03', 2);
-    expect(idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-03', 2)).toBe(k);
+    const pax = ['P1', 'P2'];
+    const k = idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-03', pax);
+    expect(idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-03', pax)).toBe(k);
     expect(k).toMatch(/^[0-9a-f]{64}$/);
     for (const other of [
-      idempotencyKey('XYZ789', 'O1', 'POL-DELAY-2026-03', 2),
-      idempotencyKey('ABC123', 'O2', 'POL-DELAY-2026-03', 2),
-      idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-04', 2),
-      idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-03', 3),
+      idempotencyKey('XYZ789', 'O1', 'POL-DELAY-2026-03', pax),
+      idempotencyKey('ABC123', 'O2', 'POL-DELAY-2026-03', pax),
+      idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-04', pax),
+      idempotencyKey('ABC123', 'O1', 'POL-DELAY-2026-03', ['P1', 'P3']),
     ]) expect(other).not.toBe(k);
   });
 

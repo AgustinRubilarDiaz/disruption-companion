@@ -19,7 +19,7 @@
 - Ninguna escritura de alto impacto la decide un modelo sin control determinístico/humano.
 
 ## 🟡 Decidido (H-12, `Docs/18` §5 y §11, 2026-10-29)
-- **Clave:** `sha256(booking_id | option_id | policy_ref | passenger_count)`. Es determinística: el
+- **Clave:** `sha256(booking_id | option_id | policy_ref | passenger_ids ordenados)`. Es determinística: el
   mismo pedido da la misma clave.
 - **Tras un 503:** hasta 2 reintentos con la misma clave. Si sigue indeterminado, la respuesta es
   202 `CONFIRMING` y se abre un caso humano `REBOOKING_INDETERMINATE`. Nunca se reintenta con otra clave.

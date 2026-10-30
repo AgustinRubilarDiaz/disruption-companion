@@ -108,9 +108,9 @@ Característica: Pantalla del pasajero ante una modificación de vuelo
 
   @seguridad @HU-007
   Escenario: La clave de idempotencia es determinística
-    Cuando se calcula la clave de la opción "O1" de "ABC123" con la política "POL-DELAY-2026-03" y 2 pasajeros
+    Cuando se calcula la clave de la opción "O1" de "ABC123" con la política "POL-DELAY-2026-03" y los pasajeros "P1, P2"
     Entonces la clave es la misma en cada cálculo
-    Y cambia si cambia la reserva, la opción, la política o la cantidad de pasajeros
+    Y cambia si cambia la reserva, la opción, la política o los pasajeros
 
   @seguridad @HU-008
   Escenario: Refrescar la pantalla no repite escrituras

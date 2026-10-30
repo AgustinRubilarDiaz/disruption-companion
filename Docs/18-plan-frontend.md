@@ -110,7 +110,7 @@ los parámetros salen sólo de `message.params`. Plantillas a cubrir:
 
 **Reglas (HU-007):**
 - El backend vuelve a evaluar la reserva y compara. No confía en lo que muestra la pantalla.
-- **Clave de idempotencia:** `sha256(booking_id | option_id | policy_ref | passenger_count)`. Es
+- **Clave de idempotencia:** `sha256(booking_id | option_id | policy_ref | passenger_ids ordenados)` (FALLA-001). Es
   determinística: el mismo pedido da la misma clave, y los reintentos por 503 reutilizan la misma.
 - El botón sólo existe con `next_step = ACCEPT_OPTION` y pide confirmación antes de enviar.
 - El texto de éxito es "solicitado, pendiente de confirmación hasta las HH:MM". **Nunca "confirmado".**

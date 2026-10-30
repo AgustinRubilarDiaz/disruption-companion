@@ -23,7 +23,7 @@ opción, así que un doble clic, un refresco o un reintento no pueden crear dos 
 
 ## Decisión
 **B.**
-- Clave: `sha256(booking_id | option_id | policy_ref | passenger_count)` (`app/rebooking.ts`).
+- Clave: `sha256(booking_id | option_id | policy_ref | passenger_ids ordenados)` (`app/rebooking.ts`).
 - Antes de escribir, el motor **vuelve a evaluar**: sólo solicita la opción recomendada ahora,
   vigente y cubierta por un `REBOOK_NO_FEE` otorgado (si no, 422 o 410).
 - 409 → 200 con el `request_id` existente. 503 → hasta 2 reintentos con la **misma** clave; si sigue
@@ -35,8 +35,6 @@ Criterio que desempató: es la única opción que cumple RN-03 sin confiar en el
 ## Consecuencias
 - Positivas: aceptar dos veces crea una sola solicitud; el pasajero nunca ve "confirmado".
 - Negativas / costos asumidos:
-  - La clave usa la **cantidad** de pasajeros, no sus IDs: si el grupo cambia sin cambiar de tamaño,
-    la clave se repite. `Docs/11` RD-11 decía `passenger_ids`; se alinea a lo implementado (H-36).
   - La deduplicación por `decision_id` vive en el mock; en producción hay que confirmarla (H-30, H-31).
 - Reversibilidad: media — cambiar la fórmula de la clave con solicitudes vivas puede duplicarlas.
 
@@ -51,4 +49,10 @@ Criterio que desempató: es la única opción que cumple RN-03 sin confiar en el
 opción no recomendada (422), vencida (410), 503 con la misma clave y 202.
 
 ## Pendiente
-- Quién confirma `PENDING_CONFIRMATION` (H-10). Decidir `passenger_count` vs `passenger_ids` (H-36).
+- Quién confirma `PENDING_CONFIRMATION` (H-10).
+
+## Enmienda 2026-10-30 (FALLA-001)
+La clave usaba la **cantidad** de pasajeros: dos grupos distintos del mismo tamaño sobre la misma
+reserva compartían clave. Pasa a los `passenger_ids` ordenados, como decía RD-11. El orden no altera
+la clave. `passenger_id` no es un dato personal (invariante 7) y sólo viaja dentro del hash.
+Evidencia: `engine/test/scenarios/FALLA-001_clave-por-pasajeros.test.ts`.

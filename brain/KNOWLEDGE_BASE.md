@@ -32,7 +32,7 @@ ofrecerla. Detalle: `domain/rules/RN-02-opciones-candidatas.md`.
 incorrecta genera costo, reclamo o incumplimiento de política.
 **Cómo se aplica:** idempotency key obligatoria; 409 = ya existe; **503 = resultado indeterminado**
 (no reintentar a ciegas); reglas con `requires_human_approval: true` pasan por humano.
-🟡 Clave `sha256(booking|option|policy_ref|passenger_count)` (ADR-006; H-36); tras un 503, 2 reintentos con la misma clave y
+🟡 Clave `sha256(booking|option|policy_ref|passenger_ids ordenados)` (ADR-006, FALLA-001); tras un 503, 2 reintentos con la misma clave y
 luego `CONFIRMING` + caso humano (H-12, decidido 2026-10-29).
 Detalle: `domain/rules/RN-03-acciones-alto-impacto.md`.
 
