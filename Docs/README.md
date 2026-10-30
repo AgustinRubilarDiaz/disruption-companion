@@ -24,9 +24,7 @@ de uso de IA.
 | 16 | [16-contrato-disruption-assessment.md](16-contrato-disruption-assessment.md) | Contrato de salida del backend v1.0, con el JSON del caso `ABC123` |
 | 17 | [17-plan-implementacion.md](17-plan-implementacion.md) | Plan del vertical slice: modelo de datos, algoritmos, API, pruebas, entregables y envío |
 | 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
-| 18 | [18-plan-frontend.md](18-plan-frontend.md) | Plan del frontend funcional: pantalla del pasajero (HU-010) y aceptar la opción (HU-007) |
+| 19 | [19-producto-poc-a-propuesta.md](19-producto-poc-a-propuesta.md) | El producto de la POC a la propuesta: reglas de evolución, ramas, catálogo UX/PL y plan de UX-01 |
 | — | [epica/EP-01-asistencia-ante-modificacion-de-vuelo.md](epica/EP-01-asistencia-ante-modificacion-de-vuelo.md) | Épica y mapa de ruta: HU, criterios de aceptación y ADR a crear |
 
 ## Convención

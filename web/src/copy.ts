@@ -55,7 +55,37 @@ export const TEMPLATES: Record<string, Sections> = {
 /** Plantilla o enum desconocidos: estado genérico y contacto. Nunca se deduce nada (Docs/16 §16.4). */
 export const GENERIC: Sections = { kind: 'UNKNOWN', alert: () => UNVERIFIED_ALERT, next: () => CONTACT };
 
+export type Tone = 'warning' | 'neutral' | 'info' | 'ok';
+
+/** Título e ícono de la tarjeta principal. El título lleva el sentido: el color sólo lo acompaña. */
+export const HERO: Record<Kind, { title: string; tone: Tone }> = {
+  REBOOK_OFFER: { title: 'Tu viaje cambió', tone: 'warning' },
+  WAIT_FOR_AGENT: { title: 'Tu viaje cambió', tone: 'warning' },
+  UNVERIFIED: { title: 'Estamos verificando tu viaje', tone: 'neutral' },
+  UNKNOWN: { title: 'Estamos verificando tu viaje', tone: 'neutral' },
+  INFO: { title: 'Hay una actualización', tone: 'info' },
+  NO_CHANGE: { title: 'Todo en orden', tone: 'ok' },
+};
+
+export const SEGMENT_STATUS: Record<string, string> = {
+  DELAYED: 'Retrasado',
+  ON_TIME: 'A tiempo',
+  SCHEDULED: 'Programado',
+  UNVERIFIED: 'Sin confirmar',
+};
+
 export const TEXT = {
+  demoMode: 'Modo demo',
+  demoPicker: 'Reserva de demostración',
+  simulatedClock: (iso: string) => `Reloj simulado: ${iso.replace('T', ' ').replace('Z', ' UTC')}`,
+  bookingCode: (id: string) => `Reserva ${id}`,
+  missedConnection: 'Conexión perdida',
+  before: 'Antes',
+  after: 'Ahora',
+  validity: 'Vigencia de la opción',
+  warn30: 'Quedan 30 segundos para aceptar esta opción',
+  loading: 'Cargando el estado de tu viaje',
+  dialogTitle: 'Confirmar el cambio de vuelo',
   accept: 'Aceptar este cambio',
   confirmAsk: (c: Ctx) =>
     `¿Confirmas el cambio al vuelo ${c.option_flight} del ${c.option_date} a las ${c.option_departure_local} para ${pax(c.passenger_count)}?`,

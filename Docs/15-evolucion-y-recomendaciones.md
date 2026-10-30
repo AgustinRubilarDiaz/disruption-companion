@@ -150,6 +150,12 @@ El informe lee R5 como "aprobación humana obligatoria" para el caso completo. N
 
 Así se empieza con el criterio del evaluador y sólo se automatiza cuando hay datos que lo justifican.
 
+> **Nota sobre la POC (`v0.1.0-poc`):** la POC del desafío implementa la lectura **en paralelo**
+> (P-17, decidida para el desafío). La lectura conservadora sigue siendo la recomendación para el
+> **piloto productivo**, y la decide el dueño de la política. Ojo: no equivale a marcar R3 con
+> aprobación humana, porque eso derivaría *todos* los cambios de pasaje y no sólo los grupos con
+> menores. Hace falta una condición combinada en la política o una regla nueva (pregunta P-17b).
+
 ---
 
 ## 15.8 Hoja de ruta de la evolución

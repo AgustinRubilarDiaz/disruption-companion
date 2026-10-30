@@ -7,10 +7,15 @@ export interface Assessment {
   booking_id: string;
   evaluated_at: string;
   trip_status: string;
-  segments: { segment_id: string; status: string; data_as_of?: string }[];
+  segments: Segment[];
   impact?: {
     missed_connection: boolean;
-    connection?: { estimated_arrival_local: string; next_departure_local: string };
+    connection?: {
+      from_segment_id?: string;
+      to_segment_id?: string;
+      estimated_arrival_local: string;
+      next_departure_local: string;
+    };
   };
   recommended_option: null | {
     option_id: string;
@@ -22,6 +27,22 @@ export interface Assessment {
   next_step: string;
   escalations: { reason: string; status: string; case_id?: string; sla_minutes?: number }[];
   message: { template_id: string; params: Record<string, string | number> };
+}
+
+export interface Segment {
+  segment_id: string;
+  flight_number?: string;
+  origin?: string;
+  destination?: string;
+  date?: string;
+  status: string;
+  scheduled_departure_local?: string;
+  new_departure_local?: string;
+  delay_minutes?: number;
+  scheduled_arrival_local?: string;
+  estimated_arrival_local?: string;
+  gate?: string;
+  data_as_of?: string;
 }
 
 export interface ScenarioInfo {

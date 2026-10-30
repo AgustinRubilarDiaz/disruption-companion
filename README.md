@@ -40,11 +40,19 @@ Con Docker, un solo contenedor con la API y la pantalla (el contexto es la raíz
 | Paquete | Comando | Qué cubre |
 |---|---|---|
 | `engine/` | `npm test` (43) | Escenarios de los dos `.feature`, contrato, unitarios, aceptación de la opción, idempotencia, archivos estáticos |
-| `web/` | `npm test` (24) | View model, interacción de la pantalla con jsdom (confirmar, vencimiento, errores), campos prohibidos |
+| `web/` | `npm test` (41) | View model, interacción de la pantalla con jsdom (confirmar, modal accesible, vigencia, enlace directo, errores), campos prohibidos |
+| `web/` | `npm run test:e2e` (3) | Navegador real (Playwright con el Google Chrome instalado): recorrido de `ABC123` en móvil hasta "pendiente de confirmación", capturas y movimiento reducido |
 
-Checklist manual (no hay pruebas con navegador real): abrir `/`, recorrer `ABC123`, `DEMOCONF` y `DEMONOEV`;
-en `ABC123` pulsar "Aceptar este cambio", confirmar y verificar "pendiente de confirmación"; recargar y
-esperar 115 s para ver el botón desactivado.
+`test:e2e` compila la pantalla y el motor, y levanta un servidor propio en el puerto 8091. Necesita
+Google Chrome instalado: usa `channel: 'chrome'` en lugar de descargar Chromium.
+
+Capturas del recorrido (generadas por `test:e2e`):
+
+| Caso base en móvil | Confirmación | Solicitud enviada | Sin confirmar | Modo oscuro |
+|---|---|---|---|---|
+| ![](Docs/img/ux01-mobile-abc123.png) | ![](Docs/img/ux01-mobile-confirm.png) | ![](Docs/img/ux01-mobile-requested.png) | ![](Docs/img/ux01-mobile-democonf.png) | ![](Docs/img/ux01-mobile-dark.png) |
+
+Enlace directo a una reserva de demostración: `http://localhost:8080/?booking=DEMOCONF`.
 
 ## API
 
@@ -107,8 +115,11 @@ engine/
 web/
   src/viewModel.ts contrato → lo que se muestra (función pura, sin lógica de negocio)
   src/copy.ts      textos por template_id
-  src/App.tsx      pantalla: alerta, impacto, siguiente paso, confirmar, cuenta regresiva
+  src/App.tsx      pantalla: alerta, itinerario, siguiente paso, comparación, confirmar, vigencia
+  src/components/  barra demo, tarjeta de estado, línea de tiempo, comparación, vigencia, modal, esqueleto
+  src/styles.css   Tailwind CSS 4 y tokens de diseño (@theme)
   test/            viewModel, interacción (jsdom) y fixtures generados por el motor real
+  e2e/             Playwright: recorrido real y capturas (Docs/img/)
 Dockerfile         un contenedor con API y pantalla
 ```
 
@@ -126,7 +137,7 @@ la solicitud queda "pendiente de confirmación". Textos y reglas: [`brain/contra
 - Si `get_policy_rules` falla, el servicio responde 500: sin política no se puede construir un mensaje validado. Es una pregunta abierta en `HALLAZGOS.md`.
 - Las escrituras (caso humano, notificación) se deduplican por `decision_id` en el mock, y en la demo el `decision_id` es fijo. En producción hay que definir quién deduplica (H-30, H-31).
 - Las horas `_local` se comparan sin zona horaria, tal como las entregan las tools (P-07).
-- La pantalla no tiene pruebas con navegador real; la interacción se prueba con jsdom. No tiene autenticación, sólo español, y el canal de contacto es genérico (H-32).
+- La pantalla no tiene autenticación, está sólo en español, y el canal de contacto es genérico (H-32). Las pruebas con navegador real corren sólo en Chrome.
 - La vigencia de la opción corre desde que carga la pantalla porque el reloj de la demo es fijo (H-33).
 - El estado de las solicitudes de cambio vive en memoria: se pierde al reiniciar el servicio.
 - La imagen de Docker no se construyó en esta máquina; el `Dockerfile` está sin probar.

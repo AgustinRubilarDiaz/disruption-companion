@@ -14,6 +14,7 @@ negocio: cuando algo no está en el enunciado, lo registra como pregunta abierta
 | BDD | Escribir el `.feature` (caso base, conflicto de fuentes, sin eventos, 404, datos personales) | Aprobarlo como gate: sin `.feature` aprobado no hay código |
 | Código y tests | Implementar `engine/` y sus tests | Aprobar el plan, el recorte por tiempo y revisar el resultado |
 | Frontend | Plan (`Docs/18`), segundo `.feature`, pantalla en React y 67 tests entre motor y pantalla | Elegir el alcance (ver y aceptar), elegir React sobre HTML plano sabiendo el costo en tiempo, y aprobar el `.feature` antes del código |
+| Producto (después de la POC) | Congelar la POC (`v0.1.0-poc`), escribir `Docs/19`, el `.feature` de UX-01 y la pantalla moderna (Tailwind, línea de tiempo, modal accesible, modo oscuro) con 44 tests de la pantalla, 3 de ellos en navegador real | Ver el proyecto como producto y no sólo como entrega, definir `main` como productiva y `dev` como integración, elegir las 7 mejoras y aprobar el `.feature` |
 
 ## Decisiones que tomé yo
 - **Track Backend/Integración**, TypeScript + Node, servicio HTTP (lo exige la entrega de `api_url`).
@@ -29,7 +30,8 @@ negocio: cuando algo no está en el enunciado, lo registra como pregunta abierta
 - La salida de `ABC123` se compara campo a campo con el fixture del contrato, que resolví antes de escribir código.
 - Un test por escenario de cada `.feature`, con el mismo nombre del escenario.
 - Los fixtures de la pantalla los genera el motor real, y un test del motor verifica que sigan siendo idénticos a la API.
-- La interacción de la pantalla (confirmar, vencimiento, duplicado, errores) se prueba con jsdom. No se probó en un navegador real ni se construyó la imagen de Docker; ambas cosas están declaradas como limitaciones.
+- La interacción de la pantalla (confirmar, vencimiento, duplicado, errores) se prueba con jsdom, y el recorrido del caso base con Playwright en Chrome. Revisar las capturas mostró dos defectos que los tests no veían (el modal capturado a mitad de la animación y horarios cortados en móvil), y se corrigieron.
+- No se construyó la imagen de Docker; está declarado como limitación.
 - Las 10 invariantes del contrato y la ausencia de datos personales se verifican en cada respuesta.
 - Revisé que los descartes de O2 y O3 tengan exactamente los motivos que se deducen del enunciado.
 
