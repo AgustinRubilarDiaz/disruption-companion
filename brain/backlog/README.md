@@ -33,6 +33,8 @@
 | [HU-008](HU-008-registro-de-decisiones.md) | Registrar cada decisión de forma trazable y sin datos personales | EP-01 | Pre-entrega |
 | [HU-009](HU-009-consulta-en-lenguaje-libre.md) | Entender una consulta escrita en lenguaje libre (diseño) | EP-01 | Borrador (diseño) |
 | [HU-010](HU-010-pantalla-del-pasajero.md) | Ver en pantalla el estado, la alerta y la recomendación | EP-01 | Pre-entrega |
+| [FALLA-001](FALLA-001-clave-por-pasajeros.md) | La clave de idempotencia no distingue grupos del mismo tamaño | EP-01 | Borrador |
+| [FALLA-002](FALLA-002-puerto-get-eligible-options.md) | El puerto no respeta el contrato de `get_eligible_options` | EP-01 | Borrador |
 
 > Los estados iniciales los asignó la migración (ENH-003) según el commit `b204ab7`: "Pre-entrega"
 > porque el gate `e2e-closure` momento 1 sigue pendiente. El usuario los confirma o corrige.

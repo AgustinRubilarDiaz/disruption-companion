@@ -67,7 +67,7 @@ Vigente desde el 2026-03-01; reemplaza a `POL-DELAY-2025-11`.
 | RD-08 | Hay conexión perdida si `llegada estimada + MCT > salida del segmento siguiente` | Conexión perdida | H-07 | Supuesto · ADR-003 (MCT 0) |
 | RD-09 | Se descarta una opción si: no alcanzan los asientos para el grupo, cobra diferencia pese a un cambio sin costo, es un reembolso con tarifa no reembolsable, no cita la política vigente, tiene confianza `LOW` o venció | Filtro de opciones | H-08 | Supuesto · ADR-005 |
 | RD-10 | Un dato faltante es **crítico** sólo si cambia la decisión (`change_penalty_amount` no lo es si el cambio es sin costo) | Contexto parcial | H-09 | Supuesto **sin implementar** (H-37) |
-| RD-11 | La idempotency key es determinística: `hash(booking_id + option_id + policy_version + passenger_count)`; ante un 503 se reintenta con la misma key, hasta 2 veces, y luego se deriva | Idempotencia | H-12 | 🟡 Decidida → RN-03 · ADR-006 (H-36) |
+| RD-11 | La idempotency key es determinística: `hash(booking_id + option_id + policy_version + passenger_ids ordenados)`; ante un 503 se reintenta con la misma key, hasta 2 veces, y luego se deriva | Idempotencia | H-12 | 🟡 Decidida → RN-03 · ADR-006 (FALLA-001) |
 | RD-12 | La `condition` se evalúa con un intérprete acotado (`hecho op valor` unidos por `AND`, catálogo cerrado de hechos); una condición que no entiende no se aplica y se deriva | Condiciones de la política | H-13 | Supuesto · ADR-004 |
 | RD-13 | Si aplican R3 y R5 a la vez, se recomienda la opción en automático y R5 se deriva en paralelo | R3 + R5 | H-17 | 🟡 Decidida → RN-07 |
 | RD-14 | Que no lleguen eventos nunca significa "sin cambios": el estado es `UNVERIFIED` | Ausencia de datos | H-11 | Supuesto · ADR-003 |

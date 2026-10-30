@@ -59,10 +59,8 @@ perder el asiento ni terminar con dos cambios.
 
 ## Dependencias y riesgos
 - Quién confirma `PENDING_CONFIRMATION` sigue abierto (H-10).
-- **Desvío del AC 3:** `idempotencyKey()` en `engine/src/app/rebooking.ts` usa `passenger_count`, no
-  los `passenger_ids` del criterio (decisión registrada en `passenger-experience.md`). Hoy no tiene
-  efecto porque la reserva completa es la unidad; si se permitiera solicitar para una parte del grupo,
-  dos subconjuntos del mismo tamaño compartirían clave. Decidir si se corrige el código o el criterio.
+- **AC 3 corregido (FALLA-001):** `idempotencyKey()` en `engine/src/app/rebooking.ts` usaba
+  `passenger_count`; ahora usa los `passenger_ids` ordenados, como dice el criterio.
 
 ## Preguntas abiertas
 - H-10 · H-36 (`passenger_count` o `passenger_ids` en la clave) · ADR-006 Propuesto

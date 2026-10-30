@@ -68,7 +68,7 @@ get_trip_context ──┬─► get_operational_events(segment_ids)  ┐
 | Aspecto | Lógica |
 |---|---|
 | Precondiciones | Opción viable y vigente · entitlement que la cubre · ninguna aprobación humana pendiente que la bloquee (H-03, H-04) · **confirmación explícita del pasajero** |
-| Idempotency key (Supuesto, H-12) | Determinística: `sha256(booking_id + option_id + policy_ref + passenger_count)`. El mismo intento produce la misma key; otra opción produce otra key. Usa la cantidad de pasajeros, no sus IDs (H-36, ADR-006) |
+| Idempotency key (Supuesto, H-12) | Determinística: `sha256(booking_id + option_id + policy_ref + passenger_ids ordenados)`. El mismo intento produce la misma key; otra opción u otro grupo producen otra key (ADR-006, FALLA-001) |
 | 201 `PENDING_CONFIRMATION` | Se informa al pasajero que quedó solicitada (no confirmada) y hasta cuándo vale (`expires_at`). Quién confirma: H-10 |
 | 409 `DUPLICATE_REQUEST` | **No es un error**: la solicitud ya existe; se usa el `request_id` devuelto y se responde igual que con un 201 |
 | 503 `UPSTREAM_TIMEOUT` | **Resultado indeterminado.** Se reintenta con **la misma key** (es seguro: o la crea, o devuelve 409), con espera creciente y un máximo de intentos. Si sigue indeterminado, se crea `create_human_case("REBOOKING_INDETERMINATE")` y al pasajero se le dice "estamos confirmando tu solicitud". Nunca se reintenta con otra key |
