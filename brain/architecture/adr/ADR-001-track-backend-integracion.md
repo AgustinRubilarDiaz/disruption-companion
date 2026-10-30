@@ -36,12 +36,20 @@ qué corresponde"; sólo el backend permite **demostrarlo con tests** en vez de 
   consumiría un frontend futuro.
 
 ## Componentes resultantes
-| Componente | Ruta | Estado |
-|---|---|---|
-| `disruption-engine` — lógica de resolución + orquestación de tools (mocks) | `engine/` | Planificado (sin código) |
-| `passenger-experience` — especificación de mensajes y wireframe | `brain/contracts/passenger-experience.md` | Diseño, por escribir |
+| Componente | Ruta | Estado al decidir (2026-10-29) | Estado actual |
+|---|---|---|---|
+| `disruption-engine` — lógica de resolución + orquestación de tools (mocks) | `engine/` | Planificado (sin código) | Implementado · POC `v0.1.0-poc` |
+| `passenger-experience` — especificación de mensajes y wireframe | `brain/contracts/passenger-experience.md` | Diseño, por escribir | Escrita |
+| `passenger-web` — pantalla del pasajero | `web/` | No previsto | Implementado (ADR-010, UX-01) |
+
+## Enmienda 2026-10-30 — la capa complementaria se implementó
+El track sigue siendo **Backend/Integración**: la profundidad (tests, invariantes, idempotencia,
+derivación) está en `engine/`. Con el tiempo que sobró se implementó la pantalla en `web/` (ADR-010),
+que consume el mismo contrato sin lógica de negocio. La consecuencia negativa de arriba ("la capa
+del pasajero se entrega como especificación, no implementada") ya no aplica; la defensa sigue
+apoyándose en los tests y las trazas del motor.
 
 ## Pendiente
-- Contrato propio `contracts/disruption-api.md` antes del primer código.
-- Stack: ADR-002.
-- IA en runtime (D-03).
+- ~~Contrato propio `contracts/disruption-api.md` antes del primer código.~~ Hecho.
+- ~~Stack: ADR-002.~~ Hecho.
+- ~~IA en runtime (D-03).~~ Hecho: ADR-009.

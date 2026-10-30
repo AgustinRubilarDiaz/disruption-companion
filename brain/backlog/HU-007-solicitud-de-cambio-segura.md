@@ -65,7 +65,7 @@ perder el asiento ni terminar con dos cambios.
   dos subconjuntos del mismo tamaño compartirían clave. Decidir si se corrige el código o el criterio.
 
 ## Preguntas abiertas
-- H-10 · ADR-006 sin escribir
+- H-10 · H-36 (`passenger_count` o `passenger_ids` en la clave) · ADR-006 Propuesto
 
 ## Historial
 - 2026-10-29 — `b204ab7` implementada en `engine/` y `web/` (estaba prevista como diseño).

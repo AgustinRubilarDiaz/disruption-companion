@@ -27,7 +27,8 @@ Leé `brain/CLAUDE.md` antes de actuar.
 
 ## Fuera del Brain
 - `Docs/Disruption_Companion.pdf` — enunciado original del desafío (fuente primaria de negocio).
-- `Docs/*.md` — copia limpia y autocontenida de `brain/product/` y `brain/contracts/logica-contratos.md`
-  (sin referencias internas del Brain). Si cambia una, se actualiza la otra.
-- `Docs/epica/` — copia limpia de `brain/backlog/EP-01-*` y sus `HU-0XX-*`. **El backlog del Brain manda.**
+- `Docs/` — copia para el comité, generada desde el Brain con `brain/operations/sync-docs.sh`
+  (`brain/product/`, `brain/contracts/logica-contratos.md`, `brain/contracts/disruption-assessment.md` y
+  `brain/backlog/` → `Docs/epica/`). **El Brain manda:** se edita en el Brain y se regenera.
+  Sólo viven en `Docs/`: 09 (resumen de `HALLAZGOS.md`), 15, 17, 18 y 19.
 - `HALLAZGOS.md` — lo que todavía NO se sabe: preguntas abiertas, supuestos, deuda.

@@ -35,8 +35,9 @@ Escribí **"cerramos"** → el agente ejecuta `.claude/skills/maintenance/brain-
 | Necesito saber sobre… | Leo en… |
 |---|---|
 | Objetivo, restricciones del desafío, topología, fronteras | `GLOBAL_AGENT_CONTEXT.md` |
-| Producto: negocio, objetivo, valor, métricas, funcionalidades, flujo | `../Docs/` (versión canónica) · `product/` (copia de trabajo) |
-| AS-IS / TO-BE e impacto financiero · reglas RB/RD/RS consolidadas · inventario de sistemas | `../Docs/10`, `../Docs/11`, `../Docs/12` |
+| Producto: negocio, objetivo, valor, métricas, funcionalidades, flujo | `product/` (fuente; `../Docs/` es la copia, se regenera con `operations/sync-docs.sh`) |
+| AS-IS / TO-BE e impacto financiero · reglas RB/RD/RS consolidadas · inventario de sistemas | `product/10`, `product/11`, `product/12` |
+| Contrato de salida `DisruptionAssessment` v1.0 | `contracts/disruption-assessment.md` |
 | Cómo se consume cada tool (validaciones, errores, idempotencia) | `contracts/logica-contratos.md` |
 | Reglas de negocio, edge cases | `KNOWLEDGE_BASE.md` |
 | Una regla concreta en detalle | `domain/rules/RN-0X-*.md` |
@@ -44,7 +45,7 @@ Escribí **"cerramos"** → el agente ejecuta `.claude/skills/maintenance/brain-
 | Contratos de las tools y de la API propia | `contracts/` |
 | Datos de ejemplo del enunciado (para mocks y tests) | `contracts/fixtures/` |
 | Decisiones técnicas | `architecture/adr/` |
-| Diagramas de contexto y flujos | `architecture/diagrams.md` |
+| Diagramas: contexto, contenedores, modelo de datos, secuencia | `architecture/diagrams.md` |
 | Qué fuente creer ante un conflicto | `architecture/fuentes-externas.md` |
 | Qué hace cada componente | `architecture/repo-index.md` · `system_topology.json` |
 | Épicas, HU, fallas y deuda técnica | `backlog/` |

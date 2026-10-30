@@ -22,10 +22,10 @@ Origen de cada afirmación:
 | 6 | Canal hacia el pasajero | Existen notificaciones `PUSH` | Evidencia |
 | 7 | Cómo resuelve hoy el pasajero sus dudas | Contacta al call center | Inferencia (el objetivo es reducir esos contactos) |
 | 8 | Quién combina datos y política | Una persona (agente) que consulta varios sistemas y aplica la política | Inferencia |
-| 9 | Trazabilidad de lo ofrecido | No se sabe si queda registrado por qué se ofreció una opción | Desconocido (P-20) |
-| 10 | Autoservicio actual en disrupciones | No se sabe si existe alguno ni qué cubre | Desconocido (P-20) |
-| 11 | Volúmenes, tasa de contacto, costo por contacto, tiempo de atención y costo de un reclamo | No hay datos | Desconocido (P-19) |
-| 12 | Cómo se entera hoy el pasajero de la modificación | No se sabe si recibe un aviso proactivo o si consulta él | Desconocido (P-22) |
+| 9 | Trazabilidad de lo ofrecido | No se sabe si queda registrado por qué se ofreció una opción | Desconocido (H-20) |
+| 10 | Autoservicio actual en disrupciones | No se sabe si existe alguno ni qué cubre | Desconocido (H-20) |
+| 11 | Volúmenes, tasa de contacto, costo por contacto, tiempo de atención y costo de un reclamo | No hay datos | Desconocido (H-19) |
+| 12 | Cómo se entera hoy el pasajero de la modificación | No se sabe si recibe un aviso proactivo o si consulta él | Desconocido (H-22) |
 
 ### Problemas del AS-IS (inferidos)
 - **La persona es el integrador.** Cada contacto obliga a reconstruir el caso desde cero.
@@ -75,13 +75,13 @@ flowchart LR
 
 | Paso | AS-IS (inferido) | TO-BE | Impacto buscado | Tipo |
 |---|---|---|---|---|
-| Enterarse de la modificación | Por sus medios o por un aviso (P-22) | Consulta en el Companion y recibe la respuesta por `PUSH` | Menos incertidumbre | Experiencia |
+| Enterarse de la modificación | Por sus medios o por un aviso (H-22) | Consulta en el Companion y recibe la respuesta por `PUSH` | Menos incertidumbre | Experiencia |
 | Entender qué pasó | Llama y un agente consulta varios sistemas | Una respuesta consolidada, verificada y con la hora del dato | Contactos evitados | Financiero |
 | Saber qué le corresponde | Depende del agente | Evaluación determinística de la versión vigente, con `policy_ref` | Ni fuga de costo ni reclamos | Financiero y cumplimiento |
 | Elegir una alternativa | El agente ofrece lo que encuentra | Sólo opciones viables para todo el grupo, dentro de su vigencia | Más aceptación, menos reversiones | Operativo |
 | Ejecutar el cambio | Lo hace el agente | Solicitud idempotente con confirmación del pasajero | Sin duplicados ni cambios sin control | Operativo |
 | Casos que requieren criterio | Llegan a L2 sin contexto estructurado (inferido) | Llegan a L2 con motivo y evidencia | Menos tiempo por caso | Operativo |
-| Auditoría | No se sabe (P-20) | Registro de cada decisión | Cada caso se puede reconstruir | Cumplimiento |
+| Auditoría | No se sabe (H-20) | Registro de cada decisión | Cada caso se puede reconstruir | Cumplimiento |
 
 ### Qué no cambia
 - El call center y la cola L2 siguen existiendo: cambia **qué** les llega, no si existen.
@@ -111,7 +111,7 @@ solo asiento para dos pasajeros. El filtro determinístico de HU-004 evita ambos
 
 ## 10.4 Modelo de impacto financiero
 
-Variables (todas por mes, todas a obtener en P-19):
+Variables (todas por mes, todas a obtener en H-19):
 
 | Variable | Significado |
 |---|---|
@@ -157,7 +157,7 @@ e_max = (Ahorro bruto − Costo operativo) / (N_auto × c_error)
   beneficio neto, **−USD 3.000**.
 
 **Conclusión:** con estos valores, una meta de error del 1 % destruiría el valor del producto. La meta
-de OV-2 se calcula con los datos reales de P-19; no se elige a priori. Esto también justifica el
+de OV-2 se calcula con los datos reales de H-19; no se elige a priori. Esto también justifica el
 diseño conservador: **derivar a una persona baja `N_auto` y `e` al mismo tiempo**, y eso protege el
 beneficio neto aunque reduzca la contención.
 
@@ -167,4 +167,4 @@ beneficio neto aunque reduzca la contención.
 Horas ahorradas en L2 = casos derivados con evidencia × (tiempo sin evidencia − tiempo con evidencia) / 60
 ```
 Ejemplo ficticio: 2.000 casos al mes × 3 min ahorrados = **100 horas de agente al mes**, que se
-reasignan a casos complejos. El valor real depende del tiempo de atención actual (P-19).
+reasignan a casos complejos. El valor real depende del tiempo de atención actual (H-19).

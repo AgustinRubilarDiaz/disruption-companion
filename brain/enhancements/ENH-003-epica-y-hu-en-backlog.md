@@ -2,7 +2,7 @@
 
 - **Fecha:** 2026-10-30
 - **Decide:** usuario
-- **Commit:** _pendiente_
+- **Commit:** `3bfe3d8` (Fase A) · Fase B en ENH-004
 
 ## Problema
 EP-01 y sus 10 HU vivían en un solo documento, `Docs/epica/EP-01-…md`, y el backlog del Brain sólo
@@ -30,11 +30,11 @@ que `Docs/` manda sobre el Brain, al revés de lo que pide el manual.
 - HU-003 AC 7: falla de `get_policy_rules` devuelve 500 (H-29).
 - HU-007 AC 3: la clave de idempotencia usa `passenger_count`, no `passenger_ids`.
 
-## Pendiente (Fase B)
-- Dar vuelta `brain/product/README.md` ("Docs manda") y traer al Brain lo que sólo vive en `Docs/`
-  (10 a 14 y 16).
-- Regenerar `Docs/epica/EP-01-…md` desde el backlog (hoy está desactualizada en numeración de ADR y estados).
-- Unificar P-XX → H-XX y RD-XX → RN-XX.
+## Pendiente (Fase B) — hecho en ENH-004
+- ~~Dar vuelta `brain/product/README.md` ("Docs manda") y traer al Brain lo que sólo vive en `Docs/`
+  (10 a 14 y 16).~~
+- ~~Regenerar `Docs/epica/EP-01-…md` desde el backlog.~~
+- ~~Unificar P-XX → H-XX y RD-XX → RN-XX.~~ RD → RN no es un renombre: ver ENH-004.
 
 ## Alternativas descartadas
 - Épica completa en un solo archivo dentro de `backlog/`: los skills no podrían operar por HU.

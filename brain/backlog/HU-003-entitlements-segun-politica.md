@@ -56,7 +56,7 @@ Como pasajero, quiero saber qué me corresponde por la modificación, para no pe
 - Depende de HU-002 (hechos: conexión perdida, retraso).
 
 ## Preguntas abiertas
-- H-13 (predicados vs intérprete; ADR-004 sin escribir) · H-14 (origen de `compensation_requested`) · H-29
+- H-13 (predicados vs intérprete; ADR-004 Propuesto, la POC usa un intérprete acotado) · H-14 (origen de `compensation_requested`) · H-29
 
 ## Historial
 - 2026-10-29 — `b204ab7` implementada en `engine/`.

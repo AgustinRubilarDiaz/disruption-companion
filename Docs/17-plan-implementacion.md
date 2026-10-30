@@ -12,13 +12,13 @@
 
 | # | Decisión | Propuesta | Por qué |
 |---|---|---|---|
-| 1 | **P-17: R3 y R5 a la vez** | **Cada entitlement sigue su propia bandera `requires_human_approval`.** R3 se otorga (`GRANTED`) y O1 se recomienda; R5 queda `PENDING_APPROVAL` y genera un caso en paralelo | Es la lectura literal de la política, sin agregar reglas. El contrato y los fixtures ya funcionan así, así que no hay que cambiar nada. Si el negocio quiere que un menor bloquee todo, lo expresa en la política (por ejemplo, `requires_human_approval: true` en R3 para grupos con menores) y el motor lo respeta sin cambiar código |
+| 1 | **H-17: R3 y R5 a la vez** | **Cada entitlement sigue su propia bandera `requires_human_approval`.** R3 se otorga (`GRANTED`) y O1 se recomienda; R5 queda `PENDING_APPROVAL` y genera un caso en paralelo | Es la lectura literal de la política, sin agregar reglas. El contrato y los fixtures ya funcionan así, así que no hay que cambiar nada. Si el negocio quiere que un menor bloquee todo, lo expresa en la política (por ejemplo, `requires_human_approval: true` en R3 para grupos con menores) y el motor lo respeta sin cambiar código |
 | 2 | **Interfaz: servicio HTTP o función** (D-04) | **Servicio HTTP** | El envío final exige una `api_url` pública que los revisores van a consultar |
 | 3 | **Umbral de frescura** `max_event_age_minutes` | **30 min**, configurable por variable de entorno | En el caso base, el retraso tiene 14 min al momento de la evaluación y es válido. El evento de `LEGACY_MIRROR` tiene 92 min: queda descartado por dos motivos (degradado y viejo) |
 | 4 | **Reloj de los mocks** | **Reloj fijo por escenario**: en modo demo, `now` = hora del escenario (`2026-09-15T11:02:40Z` en el caso base). La respuesta lo declara en el encabezado `X-Simulated-Clock` | Con el reloj real, las opciones del enunciado (vigencia de 120 s del 15-09) estarían siempre vencidas |
 | 5 | **Cómo se ejecutan los escenarios BDD** | Los `.feature` se escriben en Gherkin y se ejecutan como **tests de vitest con el mismo nombre de escenario**; cucumber-js queda como mejora | ADR-002 prevé cucumber-js, pero su configuración con TypeScript consume tiempo que no hay. Este cambio hay que registrarlo como enmienda de ADR-002 |
 | 6 | **Dónde se despliega** | **Render** (servicio web Node desde GitHub, sin CLI) o la plataforma en la que tengas cuenta | Es lo más rápido para obtener una URL pública. Requiere una cuenta tuya |
-| 7 | **MCT** (tiempo mínimo de conexión) | 0 min, configurable | Supuesto P-07; en el caso base, la conexión se pierde igual |
+| 7 | **MCT** (tiempo mínimo de conexión) | 0 min, configurable | Supuesto H-07; en el caso base, la conexión se pierde igual |
 
 ---
 
@@ -77,7 +77,7 @@ devuelve datos. Eso hace que toda la lógica de decisión sea testeable con los 
 | `Facts` | `delay_minutes` (máximo por segmento), `international`, `missed_connection`, `compensation_requested`, `group_includes_minor` |
 | `RuleEvaluation` | `rule_id`, `applies`, `facts` usados, `supported` (si existe un predicado para esa regla) |
 | `OptionEvaluation` | `option_id`, `result` (`RECOMMENDED`, `VIABLE`, `DISCARDED`), `reasons[]` (catálogo del documento 16, §16.7) |
-| `Escalation` | `reason` (catálogo de la épica, §4.3), `rule_id` opcional, `status`, `case_id`, `sla_minutes` |
+| `Escalation` | `reason` (catálogo cerrado de HU-005, `epica/HU-005-derivacion-con-evidencia.md`), `rule_id` opcional, `status`, `case_id`, `sla_minutes` |
 | `EvaluationConfig` | `max_event_age_minutes`, `mct_minutes`, `now` (reloj inyectado) |
 
 ### 3.3 Salida
@@ -98,7 +98,7 @@ devuelve datos. Eso hace que toda la lógica de decisión sea testeable con los 
 
 **`international`:** se considera internacional cuando el país de origen y el de destino son
 distintos, según una tabla mínima de aeropuertos (SCL → CL, LIM → PE, MEX → MX). Es un supuesto
-(P-07); si un aeropuerto no está en la tabla, el valor es desconocido y R2 no se aplica en automático.
+(H-07); si un aeropuerto no está en la tabla, el valor es desconocido y R2 no se aplica en automático.
 
 ---
 

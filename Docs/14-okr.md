@@ -15,7 +15,7 @@ Objetivo estratégico (OE)  ──►  Objective (O)  ──►  Key Results (KR
 - **Tipos de KR:**
   - **Resultado:** se busca moverlo y la meta es ambiciosa.
   - **Límite:** no se debe cruzar y la meta es obligatoria. No se califica con el 70 % que se suele aceptar como buen resultado en los OKR.
-- **Metas:** son supuestos mientras no exista la línea base (P-19). Se fijan con los datos del modo sombra y del grupo de control.
+- **Metas:** son supuestos mientras no exista la línea base (H-19). Se fijan con los datos del modo sombra y del grupo de control.
 - **Calificación:** de 0,0 a 1,0 por KR de resultado; 0,7 se considera un buen resultado. Un KR de límite se califica **cumplido o no cumplido**, y si no se cumple, el objetivo completo se considera no logrado.
 
 ---
@@ -26,7 +26,7 @@ Objetivo estratégico (OE)  ──►  Objective (O)  ──►  Key Results (KR
 
 | KR | Resultado clave | Tipo | Fórmula | Línea base | Meta | Fuente | Indicador |
 |---|---|---|---|---|---|---|---|
-| KR1.1 | Bajar la tasa de contacto al call center después de la disrupción | Resultado | Contactos dentro de las 24 h ÷ reservas con modificación relevante atendidas | Grupo de control (P-19) | −20 % frente al control | Registro de decisiones + call center | OV-1 |
+| KR1.1 | Bajar la tasa de contacto al call center después de la disrupción | Resultado | Contactos dentro de las 24 h ÷ reservas con modificación relevante atendidas | Grupo de control (H-19) | −20 % frente al control | Registro de decisiones + call center | OV-1 |
 | KR1.2 | Mantener las recomendaciones incorrectas por debajo del punto de equilibrio | **Límite** | Respuestas automáticas corregidas, revertidas o reclamadas ÷ respuestas automáticas | Medida en el modo sombra | Menor que `e_max` (documento 10, §10.5) | Registro + casos L2 + reclamos | OV-2 |
 | KR1.3 | Ninguna acción de alto impacto sin control | **Límite** | Solicitudes de cambio sin key, sin `policy_ref` vigente o sin la aprobación que exige la regla | — | 0 | Registro de decisiones | OV-2 |
 | KR1.4 | Responder antes de que venzan las opciones | Resultado | p95 de `respuesta − recorded_at del evento relevante` | Medido en el modo sombra | Menor que la vigencia de las opciones (120 s) para el 95 % | Registro de decisiones | IA-2 |
@@ -43,9 +43,9 @@ producto va mal encaminado.
 | KR | Resultado clave | Tipo | Fórmula | Línea base | Meta | Fuente | Indicador |
 |---|---|---|---|---|---|---|---|
 | KR2.1 | Que cada decisión se pueda reconstruir | **Límite** | Decisiones con `policy_ref`, `rule_ids`, eventos usados y descartados, y resultado ÷ decisiones | — | 100 % | Registro de decisiones | Trazabilidad |
-| KR2.2 | Que L2 resuelva sin volver a contactar al pasajero | Resultado | Casos derivados resueltos sin recontacto ÷ casos derivados | Casos actuales de L2 (P-19) | Por lo menos 80 % (supuesto) | Casos L2 | IA-4 |
-| KR2.3 | Reducir el tiempo de atención de los casos derivados | Resultado | Tiempo medio de atención de los casos del Companion frente a los casos actuales de L2 | P-19 | −25 % (supuesto) | Casos L2 | IA-4 |
-| KR2.4 | Que el modo sombra valide el criterio antes del piloto | Resultado | Casos reales evaluados en sombra con su resultado comparado contra la decisión del agente | 0 | Una muestra suficiente para estimar OV-2 con un margen de ±0,2 puntos porcentuales (tamaño a calcular con el volumen de P-19) | Modo sombra | OV-2 |
+| KR2.2 | Que L2 resuelva sin volver a contactar al pasajero | Resultado | Casos derivados resueltos sin recontacto ÷ casos derivados | Casos actuales de L2 (H-19) | Por lo menos 80 % (supuesto) | Casos L2 | IA-4 |
+| KR2.3 | Reducir el tiempo de atención de los casos derivados | Resultado | Tiempo medio de atención de los casos del Companion frente a los casos actuales de L2 | H-19 | −25 % (supuesto) | Casos L2 | IA-4 |
+| KR2.4 | Que el modo sombra valide el criterio antes del piloto | Resultado | Casos reales evaluados en sombra con su resultado comparado contra la decisión del agente | 0 | Una muestra suficiente para estimar OV-2 con un margen de ±0,2 puntos porcentuales (tamaño a calcular con el volumen de H-19) | Modo sombra | OV-2 |
 | KR2.5 | Ningún dato personal en registros ni en la evidencia de los casos | **Límite** | Hallazgos de datos personales en el registro y en la evidencia enviada a L2 | — | 0 | Revisión automática del registro | Privacidad |
 
 **Por qué este conjunto:** O1 mira al pasajero y O2 mira a la operación. Sin O2, se podría
@@ -87,6 +87,6 @@ una persona) antes de seguir persiguiendo KR1.1.
 | Excluir casos difíciles del modo sombra | La muestra de KR2.4 se toma al azar sobre todas las disrupciones del escenario |
 
 ## 14.7 Lo que falta para cerrar los OKR
-- La línea base de contactos, de tiempo de atención en L2 y de costos (P-19): define las metas de KR1.1, KR2.2, KR2.3 y `e_max`.
-- El volumen mensual de disrupciones (P-19): define el tamaño de la muestra de KR2.4.
-- Un responsable por OKR, cuya disponibilidad está por confirmar (P-27). Propuesta: el PM es dueño de O1 y el Team Lead, de O2.
+- La línea base de contactos, de tiempo de atención en L2 y de costos (H-19): define las metas de KR1.1, KR2.2, KR2.3 y `e_max`.
+- El volumen mensual de disrupciones (H-19): define el tamaño de la muestra de KR2.4.
+- Un responsable por OKR, cuya disponibilidad está por confirmar (H-27). Propuesta: el PM es dueño de O1 y el Team Lead, de O2.

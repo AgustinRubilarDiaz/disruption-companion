@@ -5,7 +5,7 @@ Característica: Pantalla del pasajero ante una modificación de vuelo
   quiero ver de un vistazo qué pasó, qué me implica y qué hacer
   para decidir rápido sin llamar al contact center.
 
-  # La pantalla consume sólo DisruptionAssessment v1.0 (Docs/16). No calcula entitlements ni conexiones.
+  # La pantalla consume sólo DisruptionAssessment v1.0 (brain/contracts/disruption-assessment.md). No calcula entitlements ni conexiones.
   # Reloj simulado (Docs/18 §2): la vigencia de la opción corre desde que carga la pantalla,
   # valid_until − evaluated_at (115 s en el caso base).
   # Se ejecuta como test del view model (función pura) y del servidor HTTP, sin navegador (Docs/18 §3).

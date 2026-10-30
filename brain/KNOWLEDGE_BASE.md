@@ -32,7 +32,7 @@ ofrecerla. Detalle: `domain/rules/RN-02-opciones-candidatas.md`.
 incorrecta genera costo, reclamo o incumplimiento de política.
 **Cómo se aplica:** idempotency key obligatoria; 409 = ya existe; **503 = resultado indeterminado**
 (no reintentar a ciegas); reglas con `requires_human_approval: true` pasan por humano.
-🟡 Clave `sha256(booking|option|policy_ref|pax)`; tras un 503, 2 reintentos con la misma clave y
+🟡 Clave `sha256(booking|option|policy_ref|passenger_count)` (ADR-006; H-36); tras un 503, 2 reintentos con la misma clave y
 luego `CONFIRMING` + caso humano (H-12, decidido 2026-10-29).
 Detalle: `domain/rules/RN-03-acciones-alto-impacto.md`.
 
@@ -55,8 +55,14 @@ Detalle: `domain/rules/RN-06-datos-personales.md`.
 ### RN-07 · Cada entitlement sigue su propia bandera de aprobación 🟡
 **Qué dice:** si aplican a la vez una regla sin aprobación y otra con `requires_human_approval: true`,
 cada una se trata por separado: la primera se otorga y su opción se ofrece; la segunda se deriva en paralelo.
-**Decisión:** P-17 / H-17, del usuario (2026-10-29). P-17b (lectura conservadora para el piloto) sigue abierta.
+**Decisión:** H-17, del usuario (2026-10-29). H-17b (lectura conservadora para el piloto) sigue abierta.
 Detalle: `domain/rules/RN-07-aprobacion-por-entitlement.md`.
+
+### Reglas dadas (RB) y de diseño (RD) del set de producto
+`product/11-reglas-de-negocio-y-restricciones.md` cataloga `RB-01…13` (cada una con su RN) y
+`RD-01…15`. Una RD **no es una RN**: es el supuesto con el que la POC cubre una pregunta abierta
+`H-XX`, y su ADR (ADR-003 a ADR-008, Propuestos) registra las opciones. Sólo dos están decididas:
+RD-11 → RN-03 y RD-13 → RN-07. Las demás pasan acá cuando el usuario responde su `H-XX`.
 
 ---
 

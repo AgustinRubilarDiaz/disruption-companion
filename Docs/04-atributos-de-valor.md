@@ -5,7 +5,7 @@ Qué cualidades hacen que el producto valga para el pasajero y para el negocio. 
 
 | # | Atributo | Para quién | Qué significa | Mecanismo que lo protege | Señal observable |
 |---|---|---|---|---|---|
-| AV-1 | **Claridad** | Pasajero | Entiende qué pasó y qué implica, en lenguaje simple, sin jerga ni datos internos | Mensajes por plantilla; no se exponen `confidence`, fuentes internas ni IDs técnicos (Supuesto, P-02) | Contactos después de la notificación que preguntan "¿qué pasó?" |
+| AV-1 | **Claridad** | Pasajero | Entiende qué pasó y qué implica, en lenguaje simple, sin jerga ni datos internos | Mensajes por plantilla; no se exponen `confidence`, fuentes internas ni IDs técnicos (Supuesto, H-02) | Contactos después de la notificación que preguntan "¿qué pasó?" |
 | AV-2 | **Accionabilidad** | Pasajero | Siempre hay un siguiente paso concreto: aceptar una opción, esperar a un agente o no hacer nada | Toda respuesta termina en un siguiente paso; derivar a una persona también lo es | Respuestas sin siguiente paso (meta: 0) |
 | AV-3 | **Veracidad** | Pasajero y negocio | Nada se afirma sin un dato verificado, fresco y consistente | Validación de frescura, fuente y conflicto; `notify_passenger` exige `policy_ref` | Mensajes corregidos después de enviados |
 | AV-4 | **Cumplimiento de política** | Negocio | Se otorga lo que dice la política vigente, ni más ni menos | Evaluación determinística contra la versión vigente; las versiones reemplazadas se rechazan | Recomendaciones revertidas por operación |

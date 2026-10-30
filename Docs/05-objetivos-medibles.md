@@ -7,7 +7,7 @@
 Se definen dos objetivos: uno de **resultado** (lo que gana el negocio) y uno de **límite** (lo que no
 se puede perder para ganarlo). Medir sólo el primero empujaría a automatizar de más.
 
-Las metas son **supuestos**: el enunciado no entrega una línea base (P-16, P-19). La V1 deja lista la
+Las metas son **supuestos**: el enunciado no entrega una línea base (H-16, H-19). La V1 deja lista la
 instrumentación, y la meta definitiva se fija con la línea base real y con la economía del documento 10.
 
 ## 5.2 Árbol de indicadores

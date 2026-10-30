@@ -19,7 +19,7 @@ negocio: cuando algo no está en el enunciado, lo registra como pregunta abierta
 ## Decisiones que tomé yo
 - **Track Backend/Integración**, TypeScript + Node, servicio HTTP (lo exige la entrega de `api_url`).
 - **Sin IA en runtime** (ADR-009): la decisión es determinista y auditable. Un LLM no agrega valor donde la política ya define la regla, y suma riesgo de alucinación y de exponer datos personales.
-- **P-17:** cada entitlement respeta su propia bandera de aprobación. Con un menor en el grupo, O1 se ofrece en automático (R3 no requiere aprobación) y R5 se deriva en paralelo. Es la lectura literal de la política y se puede cambiar desde la política sin tocar código.
+- **H-17:** cada entitlement respeta su propia bandera de aprobación. Con un menor en el grupo, O1 se ofrece en automático (R3 no requiere aprobación) y R5 se deriva en paralelo. Es la lectura literal de la política y se puede cambiar desde la política sin tocar código.
 - **Ante la duda, no afirmar:** dato en conflicto o ausente → `UNVERIFIED` y derivación, nunca "sin cambios".
 - **Recorte por tiempo:** 3 reservas de demostración en lugar de 7. El resto de los caminos de falla quedó cubierto con tests unitarios.
 - **Frontend en React**, aunque el agente señaló que costaba unos 20 minutos más y que Vite 8 es reciente: lo elegí por las pruebas automáticas de la interacción de aceptar la opción. Para evitar un conflicto de versiones, `web/` es un paquete aparte con su propio vitest.

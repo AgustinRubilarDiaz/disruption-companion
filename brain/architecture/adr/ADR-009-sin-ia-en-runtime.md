@@ -4,8 +4,8 @@
 - **Fecha:** 2026-10-29
 - **Decide:** usuario (DS / Tech Lead)
 - **Resuelve:** D-03 (`HALLAZGOS.md`)
-- **Numeración:** ADR-003 a ADR-008 quedan reservados para los ADR planificados en la épica EP-01
-  (`Docs/epica/EP-01-…md` §6).
+- **Numeración:** ADR-003 a ADR-008 se reservaron para los ADR planificados en la épica EP-01
+  (`backlog/EP-01-…md`); se escribieron el 2026-10-30.
 
 ## Contexto
 El enunciado (§5) no obliga a usar IA en runtime, pero exige explicar **qué beneficio se esperaba y
@@ -36,7 +36,7 @@ desempató: en este dominio, el costo de un error supera el beneficio de una exp
 y existe una alternativa determinística que cubre cada uso.
 
 ## Consecuencias
-- Positivas: la garantía del 422 es estructural (invariantes 4 y 5 de `Docs/16`); costo por
+- Positivas: la garantía del 422 es estructural (invariantes 4 y 5 de `contracts/disruption-assessment.md`); costo por
   interacción casi nulo; no hay exposición de datos personales a modelos; todo es testeable.
 - Negativas / costos asumidos: la consulta compleja se resuelve con opciones cerradas, no con texto
   libre (HU-009 se redefine); los mensajes son menos flexibles.

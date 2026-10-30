@@ -1,7 +1,7 @@
 # Experiencia del pasajero — pantalla (HU-010) y aceptación (HU-007)
 
 > Componente `passenger-experience` (ADR-001, capa complementaria). Implementado en `web/`.
-> Consume `DisruptionAssessment` v1.0 ([`disruption-api.md`](disruption-api.md), Docs/16) y no
+> Consume `DisruptionAssessment` v1.0 ([`disruption-api.md`](disruption-api.md), [`disruption-assessment.md`](disruption-assessment.md)) y no
 > lleva lógica de negocio: no calcula entitlements, elegibilidad ni conexiones.
 
 ## Orden de la pantalla
@@ -31,7 +31,7 @@ Fuente: `web/src/copy.ts`.
 recomendada, y ésta exige el entitlement `REBOOK_NO_FEE` otorgado.
 El canal de contacto es genérico a propósito: el enunciado no define ninguno y no se inventa.
 
-## Qué nunca se muestra (RD-02, Docs/16 §16.3)
+## Qué nunca se muestra (RD-02, `disruption-assessment.md` §16.3)
 `policy_ref`, `rule_id`, `decision_id`, `data_quality`, `confidence` y los motivos de descarte.
 El `case_id` sólo como "N.º de referencia". Un test lo verifica en las tres reservas de demostración.
 
@@ -55,7 +55,7 @@ Nunca se escribe "confirmado": la solicitud queda pendiente hasta que el sistema
 
 ## Clave de idempotencia (decisión de Docs/18 §5)
 `sha256(booking_id | option_id | policy_ref | passenger_count)`, calculada por el backend. Los
-reintentos por 503 reutilizan la misma clave. ADR-006 sigue reservado para formalizarla.
+reintentos por 503 reutilizan la misma clave. La formaliza ADR-006.
 
 ## Fuera de alcance
 Autenticación, otros idiomas, accesibilidad más allá de HTML semántico y roles ARIA, pruebas con un

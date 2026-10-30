@@ -1,6 +1,6 @@
 # RN-07 · Cada entitlement sigue su propia bandera de aprobación 🟡 Decidida
 
-**Fuente:** decisión del usuario sobre P-17 / H-17 (2026-10-29, `Docs/17` §1 decisión 1).
+**Fuente:** decisión del usuario sobre H-17 (2026-10-29, `Docs/17` §1 decisión 1).
 
 ## Qué dice
 Cuando aplican a la vez una regla sin aprobación y otra con `requires_human_approval: true`, cada
@@ -18,4 +18,4 @@ entitlement se trata por separado. Una regla que requiere aprobación no bloquea
 `engine/src/domain/policy.ts` y `control.ts` · escenario "Caso base" de `features/EP-01_evaluacion-disrupcion.feature`.
 
 ## Abierto
-- P-17b: para el piloto se recomienda la lectura conservadora (`Docs/15` §15.7). La decide negocio.
+- H-17b: para el piloto se recomienda la lectura conservadora (`Docs/15` §15.7). La decide negocio.
